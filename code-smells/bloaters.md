@@ -2,7 +2,7 @@
 
 Bloaters, üzerinde çalışılması zor olacak kadar devasa boyutlara ulaşan kodlar, yöntemler ve sınıflardır. Genellikle bu kokular hemen ortaya çıkmaz, program geliştikçe zamanla birikir (ve özellikle de hiç kimse onları yok etmek için çaba göstermediğinde).
 
-## Uzun Metot (Long Method)
+## 1️⃣ Uzun Metot (Long Method)
 
 **🤢 Belirti ve Semptomlar**
 
@@ -44,7 +44,7 @@ Birçok kişinin iddia ettiği gibi, metod sayısındaki artış performansa zar
 Ayrıca, şimdi net ve anlaşılır bir kodunuz olduğundan, gerektiğinde gerçek performans kazanımları elde etmek için kodu yeniden yapılandırmanın gerçekten etkili yöntemlerini bulma olasılığınız daha yüksektir.
 
 
-## Large Class (Büyük Sınıf)
+## 2️⃣ Large Class (Büyük Sınıf)
 
 **🤢 Belirti ve Semptomlar**
 
@@ -77,7 +77,7 @@ Bir sınıf çok fazla fonksiyon içeriyorsa, onu bölmeyi düşünün:
 
 - Çoğu durumda, büyük sınıfları parçalara ayırmak kod ve işlevlerin tekrarlanmasını önler.
 
-## Primitive Obsession (İlkel Takıntı)
+## 3️⃣ Primitive Obsession (İlkel Takıntı)
 
 **🤢 Belirti ve Semptomlar**
 
@@ -114,7 +114,7 @@ Bir sınıf çok fazla fonksiyon içeriyorsa, onu bölmeyi düşünün:
 - Kodun daha iyi anlaşılabilir ve düzenli olması. Belirli veriler üzerindeki operasyonlar, dağınık olmaktansa aynı yerde bulunur. Bu tuhaf sabitlerin ve neden dizide olduklarının nedeni hakkında daha fazla tahmin yapmaya gerek yok.
 - Kopya (duplicate) kodun daha kolay bulunması.
 
-## # Long Parameter List (Uzun Parametre Listesi)
+## 4️⃣ Long Parameter List (Uzun Parametre Listesi)
 
 **🤢 Belirti ve Semptomlar**
 
@@ -149,7 +149,7 @@ Uzadıkça çelişkili hale gelen ve kullanımı zorlaşan bu tür listeleri anl
 
 Sınıflar arasında istenmeyen bağımlılığa neden olacaksa parametrelerden kurtulmayın.
 
-## Data Clumps (Veri Kümeleri)
+## 5️⃣ Data Clumps (Veri Kümeleri)
 
 **🤢 Belirti ve Semptomlar**
 
