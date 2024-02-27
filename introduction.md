@@ -2,23 +2,23 @@
 
 ## Temiz Kod (Clean Code)
 
-Refactoringin ana amacı teknik borçla (technical debt) mücadele etmektir. Refactoring, bir karışıklığı temiz bir koda ve basit bir tasarıma dönüştürür.
+Refactoringin ana amacı teknik borçla (technical debt) mücadele etmektir. Refactoring, bir kodda bulunan karışıklığı temiz bir koda ve basit bir tasarıma dönüştürmemize yardımcı olur.
 
-Bunu cebe koyduk! Peki, temiz kod nedir? Bazı özelliklerini saymak gerekirse:
+Bu kısmı cebe koyduk! Peki, herkesin dilinden düşmeyen bu temiz kod nedir? Bazı özelliklerini kısaca saymak gerekirse:
 
 **🚿 Temiz kod, diğer programcılar için de oldukça nettir.**
 
-Burada süper karmaşık algoritmaları kastetmiyoruz. Yanlış değişken isimlendirmesi, şişmiş sınıflar ve metotlar, sihirli sayılar (magic) tüm bunlar kodu dağınık ve anlaşılması zor hale getirir.
+Burada süper karmaşık algoritmalardan bahsetmiyoruz. Yanlış değişken isimlendirmesi, içeriği şişmiş sınıflar ve metotlar, sihirli (magic) sayılar ve değişkenler tüm bunlar kodu kirli ve anlaşılması zor hale getirir.
 
 ------------
 
 **🚿 Temiz kod, tekrarlı kod (duplication) içermez.**
 
-Yinelenen bir kodda her değişiklik yapmanız gerektiğinde, aynı değişikliği her örnekte yapmayı hatırlamanız gerekir. Bu durum bilişsel yükü artırır ve ilerlemeyi yavaşlatır.
+Birka yerde yinelenen yani tekrarlanan bir kod parçası olduğunu düşünün. Bu tekrarlanan kod üzerinde her değişiklik yapmanız gerektiğinde, bu değişikliği her tekrarlanan kod üzerinde yapmayı ihmal etmemeniz gerekir. Bu durum bilişsel yükü artırır ve projenizin ilerlemesini yavaşlatır.
 
 ------------
 
-**🚿 Temiz kod minimum sayıda sınıf ve diğer hareketli parçaları (method, fonskiyon, değişken) içerir.**
+**🚿 Temiz kod minimum sayıda sınıf, method, fonskiyon ve değişken içerir.**
 
 Az kod, aklınızda tutmanız gereken az şey demektir. Az kod, daha az bakım demektir. Az kod, daha az hata demektir. Kod bir yükümdür, kodu kısa ve basit tutun.
 
