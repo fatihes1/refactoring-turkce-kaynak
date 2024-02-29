@@ -174,7 +174,7 @@ Gereksiz sınıfları ortadan kaldırmak, bilgisayardaki işletim belleğini ve 
 
 ### 🙁 Problem
 
-İstemci B nesnesini A nesnesinin bir alanından veya yönteminden alır. Daha sonra istemci B nesnesinin bir yöntemini çağırır.
+İstemci, A nesnesinin bir alanından veya yönteminden B nesnesini alır. İstemci daha sonra B nesnesinin yöntemini çağırır.
 
 <div align="center">
 
@@ -183,7 +183,7 @@ Gereksiz sınıfları ortadan kaldırmak, bilgisayardaki işletim belleğini ve 
 
 ### 😊 Çözüm
 
-A sınıfında çağrıyı B nesnesine devreden yeni bir yöntem oluşturun. Artık istemci B sınıfını bilmiyor veya ona bağlı değil.
+A sınıfında, çağrıyı B nesnesine devreden yeni bir yöntem oluşturun. Artık istemci B sınıfı hakkında bilgi sahibi değil veya buna bağlı değil.
 
 <div align="center">
 
@@ -199,11 +199,11 @@ Başlangıç ​​olarak terminolojiye bakalım:
 
 - Temsilci (delegate), istemcinin ihtiyaç duyduğu işlevselliği içeren son nesnedir.
 
-Bir istemci başka bir nesneden bir nesne talep ettiğinde, ardından ikinci nesne başka bir nesne talep ettiğinde ve bu şekilde devam ettiğinde bir çağrı zinciri ortaya çıkar. Bu çağrı dizileri, istemcinin sınıf yapısı boyunca gezinmesini içerir. Bu karşılıklı ilişkilerdeki herhangi bir değişiklik, istemci tarafında da değişiklik yapılmasını gerektirecektir.
+Bir istemci başka bir nesneden bir nesne talep ettiğinde, ardından ikinci nesne başka bir nesne talep ettiğinde ve bu şekilde devam ettiğinde bir çağrı zinciri ortaya çıkar. Bu çağrı dizileri, istemcinin sınıf yapısı boyunca gezinmesini gerektirir. Bu karşılıklı ilişkilerdeki herhangi bir değişiklik, istemci tarafında da değişiklik yapılmasını gerektirecektir.
 
 ### ✅ Avantajları
 
-Temsilciyi istemciden gizleyin. İstemci kodunun nesneler arasındaki ilişkilerin ayrıntıları hakkında ne kadar az bilgiye ihtiyacı olursa, programınızda değişiklik yapmak o kadar kolay olur.
+Temsilciyi (delegation), istemciden gizleyin. İstemci, kodunun nesneler arasındaki ilişkileri hakkında ne kadar az bilgiye ihtiyacı olursa, programınızda değişiklik yapmak o kadar kolay olacaktır.
 
 ### 🚫 Dezavantajları
 
@@ -211,17 +211,17 @@ Aşırı sayıda temsilci (delegation) yöntemi oluşturmanız gerekiyorsa, sunu
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. İstemci tarafından çağrılan temsilci sınıfının her yöntemi için, sunucu sınıfında, çağrıyı temsilci sınıfına devreden bir yöntem oluşturun.
+1. İstemci tarafından çağrılan temsilci sınıfının her bir yöntemi için; sunucu sınıfında, çağrıyı temsilci sınıfına devreden bir yöntem oluşturun.
 
 2. İstemci kodunu, sunucu sınıfının yöntemlerini çağıracak şekilde değiştirin.
 
-3. Değişiklikleriniz istemcinin temsilci sınıfına ihtiyaç duymasını engelliyorsa, sunucu sınıfından temsilci sınıfına erişim yöntemini kaldırabilirsiniz (başlangıçta temsilci sınıfını almak için kullanılan yöntem).
+3. Eğer değişiklikleriniz istemcinin temsilci sınıfına ihtiyaç duymasını engelliyorsa, sunucu sınıfından temsilci sınıfına erişim yöntemini kaldırabilirsiniz (başlangıçta temsilci sınıfını almak için kullanılan yöntem).
 
 ## Remove Middle Man
 
 ### 🙁 Problem
 
-Bir sınıfın, diğer nesnelere yetki veren çok fazla yöntemi vardır.
+Bir sınıfın, diğer nesnelere yetki veren çok fazla yöntemi olması sorun olabilir.
 
 <div align="center">
 
@@ -238,6 +238,7 @@ Bu yöntemleri silin ve istemciyi doğrudan son yöntemleri çağırmaya zorlay�
 </div>
 
 ### 🤔 Neden Refactoring Uygulanmalı?
+
 Bu tekniği açıklamak için **Hide Delegate** tekniğini terimlerini kullanacağız:
 
 - Sunucu (server),  istemcinin doğrudan erişime sahip olduğu nesnedir.
@@ -260,7 +261,67 @@ Bu tekniği açıklamak için **Hide Delegate** tekniğini terimlerini kullanaca
 
 ### 🙁 Problem
 
-Yardımcı program sınıfı ihtiyacınız olan yöntemi içermez ve yöntemi sınıfa ekleyemezsiniz.
+Yardımcı program sınıfı ihtiyacınız olan yöntemi içermez ve yöntemi sınıfa ekleyemezseniz bu projeniz için sorun olabilir.
+
+```java
+class Report {
+  // ...
+  void sendReport() {
+    Date nextDay = new Date(previousEnd.getYear(),
+      previousEnd.getMonth(), previousEnd.getDate() + 1);
+    // ...
+  }
+}
+```
+
+### 😊 Çözüm
+
+Yöntemi bir istemci sınıfına ekleyin ve yardımcı program sınıfının bir nesnesini argüman olarak ona iletin.
+
+```java
+class Report {
+  // ...
+  void sendReport() {
+    Date newStart = nextDay(previousEnd);
+    // ...
+  }
+  private static Date nextDay(Date arg) {
+    return new Date(arg.getYear(), arg.getMonth(), arg.getDate() + 1);
+  }
+}
+```
+
+### 🤔 Neden Refactoring Uygulanmalı?
+
+Belirli bir sınıfın verilerini ve yöntemlerini kullanan bir kodunuz var. Kodun sınıftaki yeni bir yöntemin içinde daha iyi konumlanacağını ve çalışacağını fark ediyorsunuz. Ancak yöntemi sınıfa ekleyemezsiniz, çünkü örneğin sınıf bir üçüncü taraf kütüphanede bulunuyor.
+
+Yönteme taşımak istediğiniz kod programınızın farklı yerlerinde birkaç kez tekrarlandığında, bu yeniden düzenleme işleminin büyük bir getirisi olacaktır.
+
+Utility sınıfının bir nesnesini yeni yöntemin parametrelerine geçirdiğinizden, tüm alanlarına erişebilirsiniz. Yöntemin içinde, yöntem yardımcı program sınıfının bir parçasıymış gibi istediğiniz hemen hemen her şeyi yapabilirsiniz.
+
+### ✅ Avantajları
+
+Kod tekrarını ortadan kaldırır. Kodunuz birkaç yerde tekrarlanırsa, bu kod parçalarını bir yöntem çağrısıyla değiştirebilirsiniz. Bu, yabancı yöntemin optimal olmayan bir yerde bulunduğu düşünülse bile tekrarlı koddan daha iyidir.
+
+### 🚫 Dezavantajları
+
+Bir istemci sınıfında bir yardımcı sınıf yöntemine sahip olmanın nedenleri, sizden sonra kodu sürdüren kişi için her zaman temiz kod olmayacaktır. Yöntem diğer sınıflarda da kullanılabiliyorsa, yardımcı sınıf için bir sarmalayıcı oluşturup yöntemi oraya yerleştirerek fayda sağlayabilirsiniz. Bu, bu tür birkaç faydalı yöntem olduğunda da faydalıdır. **Introduce Local Extension** tekniği bu konuda yardımcı olabilir.
+
+### 🤯 Nasıl Refactor Edilir?
+
+1. İstemci sınıfında yeni bir yöntem oluşturun.
+
+2. Oluşturulan bu yöntemde, yardımcı program sınıfının nesnesinin iletileceği bir parametre oluşturun. Bu nesne client sınıfından alınabiliyorsa böyle bir parametre oluşturmanıza gerek yoktur.
+
+3. İlgili kod parçalarını bu yönteme çıkarın (Extract) ve bunları yöntem çağrılarıyla değiştirin.
+
+4. Daha sonra mümkün olması durumunda, bu yöntemin bir yardımcı program sınıfına yerleştirilmesi tavsiyesiyle birlikte, yöntemin yorumlarına Yabancı yöntem etiketini bıraktığınızdan emin olun. Bu, gelecekte yazılımın bakımını yapacak kişiler için bu yöntemin neden bu özel sınıfta yer aldığını anlamayı kolaylaştıracaktır.
+
+## Introduce Local Extension
+
+### 🙁 Problem
+
+Yardımcı program sınıfı ihtiyacınız olan yöntemi içermez ve yöntemi sınıfa ekleyemezseniz bu projeniz için sorun olabilir.
 
 <div align="center">
 
@@ -269,7 +330,7 @@ Yardımcı program sınıfı ihtiyacınız olan yöntemi içermez ve yöntemi s�
 
 ### 😊 Çözüm
 
-Yöntemleri içeren yeni bir sınıf oluşturun ve onu yardımcı program sınıfının alt öğesi veya sarmalayıcısı yapın.
+Yöntemleri içeren yeni bir sınıf oluşturun. Sonrasında bu sınıfı yardımcı program sınıfının alt öğesi veya sarmalayıcısı yapın.
 
 <div align="center">
 
@@ -278,7 +339,7 @@ Yöntemleri içeren yeni bir sınıf oluşturun ve onu yardımcı program sını
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Kullandığınız sınıf ihtiyacınız olan yöntemlere sahip değil. Daha da kötüsü, bu yöntemleri ekleyemezsiniz (çünkü sınıflar örneğin üçüncü taraf bir kütüphanededir). İki çıkış yolu var:
+Kullandığınız sınıf ihtiyacınız olan yöntemlere sahip olmayabilir. Daha da kötüsü, bu yöntemleri ekleyemezsiniz (çünkü sınıflar örneğin üçüncü taraf bir kütüphanededir). İki çıkış yolu var:
 
 1. İlgili sınıftan, yöntemleri içeren ve diğer her şeyi ana sınıftan miras alan bir alt sınıf oluşturun. Bu yol daha kolaydır ancak bazen yardımcı program sınıfının kendisi tarafından engellenir (`final` anahtar kelimesi nedeniyle).
 2. Tüm yeni yöntemleri içeren bir sarmalayıcı (wrapper) sınıf oluşturun ve başka bir yerde ilgili nesneye yardımcı program sınıfından yetki verin. Bu yöntem daha fazla iş gerektirir çünkü yalnızca sarmalayıcı ve yardımcı program nesnesi arasındaki ilişkiyi sürdürmek için koda değil, aynı zamanda yardımcı program sınıfının genel arayüzünü taklit etmek için çok sayıda basit yetki verme yöntemine de ihtiyacınız vardır.
@@ -290,14 +351,14 @@ Ek yöntemleri ayrı bir uzantı sınıfına (sarmalayıcı veya alt sınıf) ta
 ### 🤯 Nasıl Refactor Edilir?
 
 1. Yeni bir uzantı sınıfı oluşturun:
-	-	Seçenek A: Onu yardımcı program sınıfının bir çocuğu (child-class) yapın.
+	-	Seçenek A: Sınıfı yardımcı program sınıfının bir çocuğu (child-class) yapın.
 	-	Seçenek B: Eğer bir sarmalayıcı yapmaya karar verdiyseniz, içinde delegasyonun yapılacağı yardımcı program sınıfı nesnesini depolamak için bir alan oluşturun. Bu seçeneği kullanırken, yardımcı program sınıfının genel yöntemlerini tekrarlayan ve yardımcı program nesnesinin yöntemlerine basit temsilci atama içeren yöntemler de oluşturmanız gerekecektir.
 
-2. Fayda sınıfının yapıcısının parametrelerini kullanan bir yapıcı oluşturun.
+2. Yardımcı sınıfının yapıcısının parametrelerini kullanan bir yapıcı oluşturun.
 
 3. Ayrıca parametrelerinde yalnızca orijinal sınıfın nesnesini alan alternatif bir dönüştürme yapıcısı (constructor) oluşturun. Bu, orijinal sınıfın nesnelerinin yerine uzantının yerleştirilmesine yardımcı olacaktır.
 
-4. Sınıfta yeni genişletilmiş yöntemler oluşturun. Yabancı yöntemleri diğer sınıflardan bu sınıfa taşıyın veya yabancı yöntemlerin işlevleri uzantıda zaten mevcutsa silin.
+4. Sınıfta yeni, genişletilmiş yöntemler oluşturun. Yabancı yöntemleri diğer sınıflardan bu sınıfa taşıyın veya yabancı yöntemlerin işlevleri uzantıda zaten mevcutsa silin.
 
 5. Yardımcı program sınıfının kullanımını, işlevselliğinin gerekli olduğu yerlerde yeni uzantı sınıfıyla değiştirin.
 
