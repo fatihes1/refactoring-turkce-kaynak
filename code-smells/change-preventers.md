@@ -1,6 +1,6 @@
 ﻿# Change Preventers (Önleyicileri Değiştirme)
 
-Bu kokular, kodunuzun bir yerinde bir şeyi değiştirmeniz gerekiyorsa, diğer yerlerde de birçok değişiklik yapmanız gerektiği anlamına gelir. Sonuç olarak program geliştirme çok daha karmaşık ve maliyetli hale gelir.
+Bu başlık altındaki kokular, kodunuzun bir yerinde bir şeyi değiştirmeniz gerekiyorsa, diğer yerlerde de birçok değişiklik yapmanız gerektiği anlamına gelir. Sonuç olarak program geliştirme çok daha karmaşık ve maliyetli hale gelir.
 
 ## 1️⃣ Iraksak Değişim (Divergent Change)
 
@@ -8,18 +8,18 @@ Divergent Change, Shotgun Surgery'e benzese de aslında tam tersi bir kokudur. I
 
 **🤢 Belirti ve Semptomlar**
 
-Bir sınıfta değişiklik yaptığınızda, ilgisiz birçok yöntemi değiştirmek zorunda kalırsınız. Örneğin, yeni bir ürün türü eklerken ürünleri bulma, sergileme ve sipariş etme yöntemlerini değiştirmeniz gerekir.
+Bir sınıfta değişiklik yaptığınızda, ilgisiz birçok yöntemi değiştirmek zorunda kalabilirsiniz. Örneğin, yeni bir ürün türü eklerken ürünleri bulma, sergileme ve sipariş etme yöntemlerini değiştirmeniz gerekir. Böyle bir durumla karşı karşıya kaldığınızda soru işaretleri oluşmalıdır.
 
 ![](https://refactoring.guru/images/refactoring/content/smells/divergent-change-01-2x.png)
 
 
 **🤒 Sorunun Nedenleri**
 
-Çoğu zaman bu farklı değişiklikler zayıf program yapısından veya "kopya yapıştır programlamasından" kaynaklanmaktadır.
+Çoğu zaman bu farklı değişiklikler zayıf program yapısından veya kopya yapıştır geliştirmelerden kaynaklanmaktadır.
 
 **💊 Tedavi**
 
-- Sınıfın davranışını **Extract Class** kullanarak bölebilirsiniz.
+- Sınıfın davranışını **Extract Class** tekniğini kullanarak parçalara bölebilirsiniz.
 
 - Farklı sınıfların aynı davranışa sahip olması durumunda, sınıfları miras yoluyla birleştirmek isteyebilirsiniz (**Extract Superclass** ve **Extract Subclass**).
 
@@ -35,19 +35,19 @@ Bir sınıfta değişiklik yaptığınızda, ilgisiz birçok yöntemi değiştir
 
 **🤢 Belirti ve Semptomlar**
 
-Herhangi bir değişiklik yapmak, birçok farklı sınıfta birçok küçük değişiklik yapmanızı gerektirir.
+Herhangi bir değişiklik yaptığınızda, birçok farklı sınıfta birçok küçük değişiklik yapmanızı gerekebilir. Bu tarz durumlarda soru işaretleriniz oluşmalıdır.
 
 ![](https://refactoring.guru/images/refactoring/content/smells/shotgun-surgery-01-2x.png)
 
 **🤒 Sorunun Nedenleri**
 
-Tek bir sorumluluk çok sayıda sınıfa dağıtılmıştır. Bu, Iraksak Değişim (Divergent Change.) tekniğini aşırı hevesli bir şekilde kullanılmasından sonra gerçekleşebilir.
+Tek bir sorumluluk çok sayıda sınıfa dağıtıldığı durumlarda ortaya çıkar. Bu, Iraksak Değişim (Divergent Change.) tekniğini aşırı agrasif bir şekilde kullanılmasından sonra gerçekleşebilir.
 
 ![](![](https://refactoring.guru/images/refactoring/content/smells/shotgun-surgery-02-2x.png)
 
 **💊 Tedavi**
 
-- Sınıfın davranışını **Extract Class** kullanarak bölebilirsiniz.
+- Sınıfın davranışını **Extract Class** tekniğini kullanarak parçalara ayırabilirsiniz.
 
 - Farklı sınıfların aynı davranışa sahip olması durumunda, sınıfları miras yoluyla birleştirmek isteyebilirsiniz (**Extract Superclass** ve **Extract Subclass**).
 
@@ -65,17 +65,19 @@ Tek bir sorumluluk çok sayıda sınıfa dağıtılmıştır. Bu, Iraksak Deği�
 
 **🤢 Belirti ve Semptomlar**
 
-Bir sınıf için bir alt sınıf oluşturduğunuzda, kendinizi başka bir sınıf için bir alt sınıf yaratmaya ihtiyaç duyarken bulabilirsiniz.
+Bir sınıf için bir alt sınıf oluşturduğunuzda, kendinizi başka bir sınıf için bir alt sınıf yaratmaya ihtiyaç duyarken bulabilirsiniz. Böyle bir durumla karşılaştığınızda soru işaretleri oluşmalıdır.
 
 ![](https://refactoring.guru/images/refactoring/content/smells/parallel-inheritance-hierarchies-01-2x.png)
 
 **🤒 Sorunun Nedenleri**
 
-Hiyerarşi küçük kaldığı sürece her şey yolundadır. Ancak yeni sınıfların eklenmesiyle değişiklik yapmak giderek zorlaşır.
+Hiyerarşi küçük kaldığı sürece her şey yolundadır. Ancak proje/program geliştiçe bu hiyeraşi büyüyecektir. Yeni sınıfların eklenmesiyle değişiklik yapmak giderek zorlaşır.
 
 **💊 Tedavi**
 
-- İki adımda paralel sınıf hiyerarşilerini tekrarsız hale getirebilirsiniz. İlk olarak, bir hiyerarşinin örneklerinin başka bir hiyerarşinin örneklerine (instance) gönderme (referans) yapmasını sağlayın. Sonra, **Move Method** ve **Move Field** kullanarak atıfta bulunan sınıftaki hiyerarşiyi kaldırın.
+- İki adımda paralel sınıf hiyerarşilerini tekrarsız hale getirebilirsiniz. Bu adımlar şu şekildedir:
+  - İlk olarak, bir hiyerarşinin örneklerinin başka bir hiyerarşinin örneklerine (instance) gönderme (referans) yapmasını sağlayın.
+  - Sonra, **Move Method** ve **Move Field** tekniklerini kullanarak atıfta bulunan sınıftaki hiyerarşiyi kaldırın.
 
 
 **💰 Hesaplaşma**
@@ -88,6 +90,6 @@ Hiyerarşi küçük kaldığı sürece her şey yolundadır. Ancak yeni sınıfl
 
 **🤫 Ne Zaman Yok Sayılmalı?**
 
-Bazen paralel sınıf hiyerarşilerine sahip olmak, program mimarisinde daha da büyük karışıklıkları önlemenin bir yoludur. Hiyerarşileri tekilleştirme girişimlerinizin daha da çirkin kod ürettiğini fark ederseniz, dışarı çıkın, tüm değişikliklerinizi geri alın ve bu koda alışın.
+Bazen paralel sınıf hiyerarşilerine sahip olmak, program mimarisinde daha da büyük karışıklıkları önlemenin bir yoludur. Hiyerarşileri tekilleştirme girişimlerinizin daha da kirli kod ürettiğini fark edebilirsiniz. Böyle bir durumda dışarı çıkın, temiz hava alın ve geri döndüğünüzde tüm değişikliklerinizi geri alın ve bu koda alışın.
 
 
