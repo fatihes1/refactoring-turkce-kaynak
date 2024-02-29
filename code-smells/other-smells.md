@@ -6,7 +6,7 @@ Aşağıda herhangi bir geniş kategoriye girmeyen kokular bulunmaktadır.
 
 **🤢 Belirti ve Semptomlar**
 
-Er ya da geç kütüphaneler kullanıcı ihtiyaçlarını karşılamayı bırakır. Sorunun tek çözümü, yani kitaplığı değiştirmek olacaktır. Ancak kitaplık salt okunur olduğundan çoğu zaman imkansızdır.
+Er ya da geç kütüphaneler kullanıcı ihtiyaçlarını karşılamayı bırakır. Sorunun tek çözümü, kitaplığı değiştirmek olacaktır. Ancak kitaplık salt okunur olduğundan dolayı bu durum da çoğu zaman imkansızdır. Böyle bir durumda soru işaretleri oluşmaya başlar.
 
 ![](https://refactoring.guru/images/refactoring/content/smells/incomplete-library-class-01-2x.png)
 
@@ -22,11 +22,11 @@ Kütüphanenin yazarı ihtiyacınız olan özellikleri sağlamadı veya bunları
 
 **💰 Hesaplaşma**
 
-- Kod tekrarını azaltır (kendi kitaplığınızı sıfırdan oluşturmak yerine, mevcut kitaplığınızı yine de kullanabilirsiniz).
+- Kod tekrarını azaltır (kendi kitaplığınızı sıfırdan oluşturmak yerine, mevcut kitaplığınızı biraz düzenleme ile yine de kullanabilirsiniz).
 
 ![](https://refactoring.guru/images/refactoring/content/smells/incomplete-library-class-02-2x.png)
 
 **🤫 Ne Zaman Yok Sayılmalı?**
 
-Kitaplıkta yapılan değişiklikler kodda değişiklik içeriyorsa, kitaplığı genişletmek ek iş üretebilir.
+Kitaplıkta yapılan değişiklikler kodda değişiklik içeriyorsa, kitaplığı genişletmek ek iş üretebilir. Böyle bir durumda, bu kokuyu yoksayabilirsiniz.
 
