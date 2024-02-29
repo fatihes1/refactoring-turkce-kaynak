@@ -58,7 +58,7 @@ Sınıflar genellikle küçük yapılar olarak başlar. Ancak program büyüdük
 
 Uzun yöntemler case'inde de olduğu gibi, programcılar genellikle mevcut bir sınıfa yeni bir özellik eklemeyi, o özellik için yeni bir sınıf oluşturmaya tercih ederler.
 
-![](![](https://refactoring.guru/images/refactoring/content/smells/large-class-02.png)
+![](https://refactoring.guru/images/refactoring/content/smells/large-class-02.png)
 
 **💊 Tedavi**
 
