@@ -172,12 +172,12 @@ Refaktörü, yeni özelliklerin doğrudan geliştirilmesiyle karıştırmayın. 
 
 **✅ Refaktör sonrasında mevcut tüm testlerin geçmesi gerekir.**
 
-Yeniden düzenleme sonrasında testlerin bozulabileceği iki durum vardır:
+Refactoring sonrasında testlerin bozulabileceği iki durum söz konusu olabilir:
 
-- Yeniden düzenleme sırasında bir hata yaptınız. Bu hiç akıllıca değil: devam edin ve hatayı düzeltin.
-- Testleriniz çok düşük düzeyde (low-level) olabilir. Örneğin, sınıfların private yöntemlerini test etmeyi denemiş olabilirsiniz.
+- Yeniden düzenleme sırasında bir hata yapmış olabilirsiniz. Bu hiç akıllıca değil: devam etmeli ve bir şekilde hatayı düzeltmelisiniz.
+- Testleriniz düşük düzeyde (low-level) olabilir. Örneğin, sınıfların private yöntemlerini test etmeyi denemiş olabilir ve testler başarısızlıkla sonuçlanmış olabilir.
 
-Bu durumda, testler suçludur. Testleri kendiniz yeniden düzenleyebilir veya tamamen yeni bir dizi üst düzey test yazabilirsiniz. Bu tür bir durumdan kaçınmanın harika bir yolu BDD (Behavior-driven Development) tarzı testler yazmaktır.
+Bu durumda, sorun testlerdedir. Bu durumda iki seçeneğiniz var: Testleri kendiniz yeniden düzenleyebilir veya tamamen yeni bir dizi üst düzey yani kapsamlı test yazabilirsiniz. Bu tür bir durumdan kaçınmanın harika bir yolu BDD (Behavior-driven Development) prensibine dayalı testler yazmaktır.
 
 
 
