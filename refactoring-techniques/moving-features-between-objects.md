@@ -8,7 +8,7 @@ Bu yeniden düzenleme teknikleri, işlevselliğin sınıflar arasında güvenli 
 
 ### 🙁 Problem
 
-Bir yöntem başka bir sınıfta kendi sınıfından daha fazla kullanılır.
+Bir yöntem başka bir sınıfta kendi sınıfından daha fazla kullanması sorun oluşturabilir.
 
 <div align="center">
 
@@ -17,7 +17,7 @@ Bir yöntem başka bir sınıfta kendi sınıfından daha fazla kullanılır.
 
 ### 😊 Çözüm
 
-Yöntemi en çok kullanan sınıfta yeni bir yöntem oluşturun, ardından kodu eski yöntemden oraya taşıyın. Orijinal yöntemin kodunu diğer sınıftaki yeni yönteme referans haline getirin veya tamamen kaldırın.
+Yöntemi en çok kullanan sınıfta, yeni bir yöntem oluşturun. Ardından kodu eski yöntemden oluşturduğunuz yönteme taşıyın. Orijinal yöntemin kodunu diğer sınıftaki yeni yönteme referans olacak şekilde güncelleyin veya tamamen kaldırın.
 
 <div align="center">
 
@@ -32,13 +32,13 @@ Yöntemi en çok kullanan sınıfta yeni bir yöntem oluşturun, ardından kodu 
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Kendi sınıfında eski yöntemin kullandığı tüm özellikleri taşıdığını doğrulayın. Bunları taşımak da iyi bir fikir olabilir. Kural olarak, eğer bir özellik yalnızca söz konusu yöntem tarafından kullanılıyorsa, özelliği mutlaka ona taşımalısınız. Özellik başka yöntemler tarafından da kullanılıyorsa bu yöntemleri de taşımalısınız. Bazen çok sayıda yöntemi taşımak, farklı sınıflarda aralarında ilişkiler kurmaktan çok daha kolaydır.
+1. Kendi sınıfında eski yöntemin kullandığı tüm özellikleri taşıdığını doğrulayın. Bunları taşımak da iyi bir fikir olabilir. Kural olarak, eğer bir özellik yalnızca söz konusu yöntem tarafından kullanılıyorsa, özelliği mutlaka yöntemle birlikte taşımalısınız. Özellik başka yöntemler tarafından da kullanılıyorsa bu yöntemleri de taşımalısınız. Bazen çok sayıda yöntemi taşımak, farklı sınıflarla aralarında ilişkiler kurmaktan çok daha kolaydır.
 
-Yöntemin üst sınıflarda ve alt sınıflarda bildirilmediğinden yani tanımlanmadığından emin olun. Durum böyleyse, verici sınıfları arasında bölünmüş bir yöntemin değişen işlevselliğini sağlamak için ya hareket etmekten kaçınmanız ya da alıcı sınıfta bir tür polimorfizm uygulamanız gerekecektir.
+Yöntemin üst sınıflarda ve alt sınıflarda bildirilmediğinden yani kullanılmadığından emin olun. Bu durumda, donör sınıflar arasında bölünmüş bir yöntemin değişen işlevselliğini sağlamak için ya taşımaktan kaçınmanız ya da alıcı sınıfta bir tür çok biçimlilik (polymorphism) uygulamanız gerekecektir.
 
 2. Alıcı sınıfında yeni yöntemi tanımlayın. Yeni sınıfta metoda daha uygun olan yeni bir isim vermeyi de göz önünde bulundurabilirsiniz.
 
-3. Alıcı sınıfına nasıl referans vereceğinize karar verin. Uygun bir nesneyi döndüren bir alanınız veya yönteminiz zaten olabilir, ancak yoksa alıcı sınıfın nesnesini depolamak için yeni bir yöntem veya alan yazmanız gerekecektir.
+3. Alıcı sınıfına nasıl referans vereceğinize karar verin. Uygun bir nesneyi döndüren bir alanınız veya yönteminiz zaten olabilir, ancak yoksa alıcı sınıfın nesnesini depolamak için yeni bir yöntem veya alan oluşturmanız gerekecektir.
 
 Artık alıcı nesneye ve onun sınıfındaki yeni bir yönteme referans vermenin bir yoluna sahipsiniz. Tüm bunları elinizin altında tutarak eski yöntemi yeni yöntemin referansına dönüştürebilirsiniz.
 
@@ -48,7 +48,7 @@ Artık alıcı nesneye ve onun sınıfındaki yeni bir yönteme referans vermeni
 
 ### 🙁 Problem
 
-Bir alan (field) kendi sınıfından ziyade başka bir sınıfta daha fazla kullanılır.
+Bir alan (field) kendi sınıfından ziyade başka bir sınıfta daha fazla kullanılıyorsa sorun oluşturabilir.
 
 <div align="center">
 
@@ -57,7 +57,7 @@ Bir alan (field) kendi sınıfından ziyade başka bir sınıfta daha fazla kull
 
 ### 😊 Çözüm
 
-Yeni bir sınıfta bir alan oluşturun ve eski alanın tüm kullanıcılarını ona yönlendirin.
+Yeni bir sınıfta bir alan (field) oluşturun ve eski alanın tüm kullanımlarını yeni oluşturulan field'a yönlendirin.
 
 <div align="center">
 
@@ -66,17 +66,17 @@ Yeni bir sınıfta bir alan oluşturun ve eski alanın tüm kullanıcılarını 
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Genellikle alanlar, **Extract Class** tekniğinin bir parçası olarak taşınır. Alanı hangi sınıfta bırakacağınıza karar vermek zor olabilir. Temel kuralımız şu: Alanı, onu kullanan yöntemlerle aynı yere (veya bu yöntemlerin çoğunun bulunduğu yere) koyun.
+Genellikle alanlar (fields), **Extract Class** tekniğinin bir parçası olarak taşınır. Alanı hangi sınıfta bırakacağınıza karar vermek zor olabilir. Temel kuralımız şu: Alanı, onu kullanan yöntemlerle aynı yere veya bu yöntemlerin çoğunun bulunduğu yere konumlandırmak daha sağlıklı olacaktır.
 
-Bu kural, alanın yanlış yere yerleştirildiği diğer durumlarda yardımcı olacaktır.
+Bu kural, alanın yanlış yere yerleştirildiği diğer durumlarda kurtarıcınız olacaktır.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Eğer alan public ise, alanı private yapıp public erişim yöntemleri sağlarsanız (bunun için **Encapsulate Field** tekniğini kullanabilirsiniz) yeniden düzenleme çok daha kolay olacaktır.
+1. Eğer alan public ise, alanı private yapıp public erişim yöntemleri sağlarsanız (bunun için **Encapsulate Field** tekniğini kullanabilirsiniz) refactoring çok daha kolay olacaktır.
 
-2. Alıcı sınıfında erişim yöntemleriyle aynı alanı oluşturun.
+2. Alıcı sınıfında erişim yöntemleriyle aynı yeni bir alanı oluşturun.
 
-3. Alıcı sınıfına nasıl erişeceğinize karar verin. Uygun nesneyi döndüren bir alanınız veya yönteminiz zaten olabilir; değilse, alıcı sınıfın nesnesini depolamak için yeni bir yöntem veya alan yazmanız gerekecektir.
+3. Alıcı sınıfına nasıl erişeceğinize karar verin. Uygun nesneyi döndüren bir alanınız veya yönteminiz zaten olabilir; değilse, alıcı sınıfın nesnesini depolamak için yeni bir yöntem veya alan oluşturmanız gerekecektir.
 
 4. Eski alana yapılan tüm referansları, alıcı sınıfındaki yöntemlere yapılan uygun çağrılarla değiştirin. Alan private değilse üst sınıfta ve alt sınıflarda bu konuyla ilgilenin.
 
@@ -86,7 +86,7 @@ Bu kural, alanın yanlış yere yerleştirildiği diğer durumlarda yardımcı o
 
 ### 🙁 Problem
 
-Bir sınıf iki sınıfın işini aynı anda yapmaya çalıştığında tuhaflık ortaya çıkar.
+Bir sınıf iki sınıfın işini aynı anda yapmaya çalıştığında sorun ortaya çıkabilir.
 
 <div align="center">
 
@@ -95,7 +95,7 @@ Bir sınıf iki sınıfın işini aynı anda yapmaya çalıştığında tuhaflı
 
 ### 😊 Çözüm
 
-Yeni bir sınıf oluşturun ve ilgili işlevsellikten sorumlu alanları ve yöntemleri yeni oluşturulan bu sınıfa yerleştirin.
+Yeni bir sınıf oluşturun ve ilgili işlevsellikten sorumlu alanları ve yöntemleri yeni oluşturduğunuz bu sınıfa taşıyın.
 
 <div align="center">
 
@@ -104,17 +104,17 @@ Yeni bir sınıf oluşturun ve ilgili işlevsellikten sorumlu alanları ve yönt
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Sınıflar her zaman net ve anlaşılması kolay başlar. Diğer sınıfların çalışmalarına karışmadan işlerini yapıyorlar ve kendi işleriyle ilgileniyorlar. Ancak program genişledikçe, bir yöntem ve ardından bir alan eklenir... ve sonunda bazı sınıflar, her zamankinden daha fazla sorumluluk yerine getirir. Hatta bazen birkaç sınıfın işini tek bir sınıfın sorumluluğuna yığabiliriz.
+Sınıflar her zaman net ve anlaşılması kolay başlar. Diğer sınıfların çalışmalarına karışmadan işlerini yaparlar ve kendi işleriyle ilgilenirler. Ancak program genişledikçe, birer birer yöntemler ve alanlar (fields) eklenir... ve sonunda bazı sınıflar, her zamankinden daha fazla sorumluluk yerine getirir. Hatta bazen birkaç sınıfın işini tek bir sınıfın sorumluluğuna bırakmış olabiliriz.
 
 ### ✅ Avantajları
 
-- Bu yeniden düzenleme yöntemi, Tek Sorumluluk İlkesine (Single Responsibility Principle) bağlılığın korunmasına yardımcı olacaktır. Sınıflarınız kodları daha açık ve anlaşılır olacaktır.
+- Bu refactoring yöntemiyle, Tek Sorumluluk İlkesine (Single Responsibility Principle) bağlılığın korunmasına yardımcı olacaktır. Sınıflarınız kodları daha açık ve anlaşılır hale gelecektir.
 
 - Tek sorumluluk sınıfları daha güvenilirdir ve değişikliklere karşı daha dayanıklıdır. Örneğin on farklı şeyden sorumlu bir sınıfınız olduğunu varsayalım. Bu sınıfı bir şeyi daha iyi hale getirmek için değiştirdiğinizde, diğer dokuz konuda onu bozma riskiyle karşı karşıya kalırsınız.
 
 ### 🚫 Dezavantajları
 
-Bu refactoring tekniğini kullanırken aşırıya kaçarsanız **Inline Class** yöntemine başvurmak zorunda kalacaksınız.
+Bu refactoring tekniğini kullanırken aşırıya kaçarsanız **Inline Class** yöntemine başvurmak zorunda kalabilirsiniz.
 
 ### 🤯 Nasıl Refactor Edilir?
 
@@ -122,9 +122,9 @@ Başlamadan önce sınıfın sorumluluklarını tam olarak nasıl bölmek istedi
 
 1. İlgili işlevselliği içerecek yeni bir sınıf oluşturun.
 
-2. Eski sınıf ile yeni sınıf arasında bir ilişki oluşturun. İdeal durumda bu ilişki tek yönlüdür; bu, ikinci sınıfın herhangi bir sorun olmadan yeniden kullanılmasına olanak tanır. Ancak iki yönlü bir ilişkinin gerekli olduğunu düşünüyorsanız bu da elbette her zaman kurulabilir.
+2. Eski sınıf ile yeni sınıf arasında bir ilişki oluşturun. İdeal durumda bu ilişki tek yönlüdür. Bu tek yönlü ilişki, ikinci sınıfın herhangi bir sorun olmadan yeniden kullanılmasına olanak tanır. Ancak iki yönlü bir ilişkinin gerekli olduğunu düşünüyorsanız bu da elbette her zaman kurulabilir. Sizi engelleyen bir kural veya durum yoktur.
 
-3. Yeni sınıfa taşımaya karar verdiğiniz her alan ve yöntem için **Move Field** ve **Move Method** tekniğini kullanın. Yöntemler için, çok sayıda hata yapma riskini azaltmak amacıyla private olanlarla başlayın. En sonunda hata düzeltme yığınından kaçınmak için, her seferinde biraz yer değiştirmeye çalışın ve her hareketten sonra sonuçları test edin.
+3. Yeni sınıfa taşımaya karar verdiğiniz her alan ve yöntem için **Move Field** ve **Move Method** tekniklerini kullanın. Yöntemler için, hata yapma riskini azaltmak amacıyla private olanlarla başlayın. En sonunda hata-düzeltme zincirinden kaçınmak için, her seferinde biraz yer değiştirmeye çalışın ve her taşımadan sonra sonuçları test edin.
 
 Taşıma işlemini tamamladıktan sonra ortaya çıkan sınıfları bir kez daha kontrol edin. Sorumlulukları değişen eski bir sınıf, daha fazla netlik sağlamak amacıyla yeniden adlandırılabilir. Varsa, iki yönlü sınıf ilişkilerinden kurtulup kurtulamayacağınızı görmek için tekrar kontrol edin.
 
@@ -135,7 +135,7 @@ Taşıma işlemini tamamladıktan sonra ortaya çıkan sınıfları bir kez daha
 
 ### 🙁 Problem
 
-Bir sınıf neredeyse hiçbir şey yapmaz ve hiçbir şeyden sorumlu değildir ve bunun için ek bir sorumluluk planlanmamıştır. Yani neredeyse görevi olmayan kullanılmayan bir sınıf vardır.
+Bir sınıf neredeyse hiçbir şey yapmaz ve hiçbir şeyden sorumlu değildir. Yani neredeyse görevi olmayan kullanılmayan bir sınıf vardır. Bu projeniz için sorun olabilir.
 
 <div align="center">
 
@@ -144,7 +144,7 @@ Bir sınıf neredeyse hiçbir şey yapmaz ve hiçbir şeyden sorumlu değildir v
 
 ### 😊 Çözüm
 
-Tüm özellikleri sınıftan diğerine taşıyın.
+Tüm özellikleri sınıftan diğer bir sınıfa taşıyın.
 
 <div align="center">
 
@@ -161,7 +161,7 @@ Gereksiz sınıfları ortadan kaldırmak, bilgisayardaki işletim belleğini ve 
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Alıcı sınıfında, verici sınıfında bulunan ortak alanları ve yöntemleri oluşturun. Yöntemler, verici sınıfının eşdeğer yöntemlerine atıfta bulunmalıdır.
+1. Alıcı sınıfında, verici sınıfında (neredeyse iş yapmayan sınıf) bulunan ortak alanları ve yöntemleri oluşturun. Yöntemler, verici sınıfının eşdeğer yöntemlerine atıfta bulunmalıdır.
 
 2. Verici sınıfına yapılan tüm referansları, alıcı sınıfın alanlarına ve yöntemlerine yapılan referanslarla değiştirin.
 
