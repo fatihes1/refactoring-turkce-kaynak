@@ -6,7 +6,7 @@ Bu teknikler yöntem çağrılarını daha basit ve anlaşılır hale getirir. B
 
 ### 🙁 Problem
 
-Bir yöntemin adı, yöntemin ne yaptığını açıklamaz.
+Bir yöntemin adı, yöntemin ne yaptığını açıklamaması durumunda, koda bakan bir geliştirici işlevin ne yaptığını anlamak için vakit kaybedecektir.
 
 <div align="center">
 
@@ -15,7 +15,7 @@ Bir yöntemin adı, yöntemin ne yaptığını açıklamaz.
 
 ### 😊 Çözüm
 
-Yöntemi yeniden adlandırın.
+Yöntemi, yöntemin amacına uygun şekilde yeniden adlandırın.
 
 <div align="center">
 
@@ -24,19 +24,19 @@ Yöntemi yeniden adlandırın.
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Belki de bir yöntem en başından beri kötü bir şekilde adlandırılmıştır; örneğin, birisi yöntemi aceleyle oluşturmuş ve onu iyi adlandırmaya gereken özeni göstermemiştir.
+Belki de bir yöntem ilk oluşturulduğunda kötü bir şekilde adlandırılmış olabilir; örneğin, birisi yöntemi aceleyle oluşturmuş ve onu iyi adlandırmaya gereken özeni göstermemiştir.
 
-Veya belki de yöntem ilk başta iyi adlandırılmıştı ancak işlevselliği arttıkça yöntem adı iyi bir tanımlayıcı olmaktan çıktı.
+Diğer bir ihtimal ise, belki de yöntem ilk başta iyi adlandırılmıştı ancak işlevselliği arttıkça yöntem adı, yöntemin amacına uygun bir tanımlayıcı olmaktan çıkmış olabilir.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Yöntemin bir üst sınıfta mı yoksa alt sınıfta mı tanımlandığını görün. Eğer öyleyse, bu sınıflardaki tüm adımları da tekrarlamanız gerekir.
+1. Yöntem, bir üst sınıfta mı yoksa bir alt sınıfta mı tanımlandığına karar verin. Eğer bu iki durumdan biri var ise, burada listelenen tüm adımları diğer sınıflar için de tekrarlamanız gerekmektedir.
 
-2. Bir sonraki yöntem, yeniden düzenleme işlemi sırasında programın işlevselliğini korumak için önemlidir. Yeni bir adla yeni bir yöntem oluşturun. Eski yöntemin kodunu buna kopyalayın. Eski yöntemdeki tüm kodu silin ve bunun yerine yeni yöntem için bir çağrı ekleyin.
+2. Bu madde, refactoring işlemi sırasında programın işlevselliğini korumak için önemlidir. Yeni bir adla yeni bir yöntem oluşturun. Eski yöntemin kodunu bu oluşturduğunuz yönteme kopyalayın. Eski yöntemdeki tüm kodu silin ve bunun yerine yeni yöntem için bir method çağrısı (method call) ekleyin.
 
-3. Eski yönteme yapılan tüm referansları bulun ve bunları yenisine yapılan referanslarla değiştirin.
+3. Eski yönteme yapılan tüm referansları bulun ve bunları yeni oluşturduğunuz yönteme yapılan referanslarla değiştirin.
 
-4. Eski yöntemi silin. Eski yöntem genel bir arayüzün parçasıysa bu adımı gerçekleştirmeyin. Bunun yerine eski yöntemi kullanımdan kaldırılmış olarak işaretleyin.
+4. Eski yöntemi silin. Eski yöntem public bir arayüzün (interface) parçasıysa bu adımı gerçekleştirmeyin. Bunun yerine eski yöntemi kullanımdan kaldırılmış (deprecated) olarak işaretleyin.
 
 ## Add Parameter
 
