@@ -42,7 +42,7 @@ Diğer bir ihtimal ise, belki de yöntem ilk başta iyi adlandırılmıştı anc
 
 ### 🙁 Problem
 
-Bir yöntemin belirli eylemleri gerçekleştirmek için yeterli verisi yok.
+Bir yöntemin hedeflenen amacı gerçekleştirmek için yeterli veriye sahip olmaması sorun oluşturur.
 
 <div align="center">
 
@@ -51,7 +51,7 @@ Bir yöntemin belirli eylemleri gerçekleştirmek için yeterli verisi yok.
 
 ### 😊 Çözüm
 
-Gerekli verileri iletmek için yeni bir parametre oluşturun.
+Gerekli verileri yönteme iletmek için yeni bir parametre daha oluşturun.
 
 <div align="center">
 
@@ -60,35 +60,35 @@ Gerekli verileri iletmek için yeni bir parametre oluşturun.
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Bir yöntemde değişiklik yapmanız gerekir ve bu değişiklikler, daha önce yöntemde bulunmayan bilgi veya verilerin eklenmesini gerektirir.
+Gelen yeni talepler doğrusultusunda, bir yöntemde değişiklik yapmanız gerekebilir. Bu değişiklikler sırasında kullanmanız gereken veri, daha önce yöntemde bulunmayan bilgi veya verilerin eklenmesini gerektirecektir.
 
 
 ### ✅ Avantajları
 
-Buradaki seçim, yeni bir parametre eklemek ile yöntemin ihtiyaç duyduğu verileri içeren yeni bir özel alan eklemek arasındadır. Her zaman bir nesnede tutmanın bir anlamı olmayan, ara sıra veya sık sık değişen verilere ihtiyaç duyduğunuzda bir parametre tercih edilir. Bu durumda, yeniden düzenleme işe yarayacaktır. Aksi takdirde, özel bir alan ekleyin ve yöntemi çağırmadan önce bu alanı gerekli verilerle doldurun.
+Buradaki seçim, yönteme yeni bir parametre eklemek ile yöntemin ihtiyaç duyduğu verileri içeren yeni bir prive field eklemek arasındadır. Her zaman bir nesnede tutmanın bir anlamı olmayan, ara sıra veya sık sık değişen verilere ihtiyaç duyduğunuzda bir parametre tercih edilmesi daha mantıklı olacaktır. Bu durumda, refactoring işe yarayacaktır. Aksi takdirde, private bir field ekleyin ve yöntemi çağırmadan önce bu field'a gerekli değer atamasını yaptığınızdan emin olun.
 
 ### 🚫 Dezavantajları
 
-- Yeni bir parametre eklemek her zaman onu kaldırmaktan daha kolaydır; bu nedenle parametre listeleri sıklıkla grotesk boyutlara ulaşır. Bu koku Uzun Parametre Listesi (Long Parameter List) olarak bilinir.
+- Yeni bir parametre eklemek her zaman var olan parametreyi kaldırmaktan daha kolaydır; bu nedenle parametre listeleri sıklıkla çok yüksek boyutlara ulaşır. Bu kod koku Uzun Parametre Listesi (**Long Parameter List**) olarak bilinir.
 
-- Yeni bir parametre eklemeniz gerekiyorsa bu bazen sınıfınızın gerekli verileri içermediği veya mevcut parametrelerin gerekli ilgili verileri içermediği anlamına gelir. Her iki durumda da en iyi çözüm, verileri ana sınıfa veya nesnelerine yöntemin içinden zaten erişilebilen diğer sınıflara taşımayı düşünmektir.
+- Yeni bir parametre eklemeniz gerekiyorsa bu bazen sınıfınızın gerekli verileri içermediği veya mevcut parametrelerin ilgili verileri içermediği anlamına gelir. Her iki durumda da en iyi çözüm, verileri ana sınıfa veya nesnelerine yöntemin içinden zaten erişilebilen diğer sınıflara taşımayı düşünmek olakactır.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Yöntemin bir üst sınıfta mı yoksa alt sınıfta mı tanımlandığını görün. Eğer yöntem onlarda mevcutsa, bu sınıflardaki tüm adımları da tekrarlamanız gerekecektir.
+1. Yöntem, bir üst sınıfta mı yoksa bir alt sınıfta mı tanımlandığına karar verin. Eğer bu iki durumdan biri var ise, burada listelenen tüm adımları diğer sınıflar için de tekrarlamanız gerekmektedir.
 
-2. Aşağıdaki adım, yeniden düzenleme işlemi sırasında programınızı işlevsel tutmak için kritik öneme sahiptir. Eskisini kopyalayarak yeni bir yöntem oluşturun ve ona gerekli parametreyi ekleyin. Eski yöntemin kodunu yeni yöntemin çağrısıyla değiştirin. Yeni parametreye herhangi bir değeri (nesneler için null veya sayılar için sıfır gibi) ekleyebilirsiniz.
+2. Bu ve aşağıdaki adım, refactoring işlemi sırasında programınızı işlevsel tutmak için kritik öneme sahiptir. Eski yöntemi kopyalayarak yeni bir yöntem oluşturun. Sonrasında, oluşturmuş olduğunuz yönteme gerekli parametreyi ekleyin. Eski yöntemin kod body'sini yeni yöntemin çağrısıyla değiştirin. Yeni parametreye bir varsayılan (default) bir değeri ekleyebilirsiniz.
 
-3. Eski yönteme yapılan tüm referansları bulun ve bunları yeni yönteme yapılan referanslarla değiştirin.
+3. Eski yönteme yapılan tüm referansları bulun ve bunları yeni oluşturulan yönteme yapılan referanslarla değiştirin.
 
-4. Eski yöntemi silin. Eski yöntem genel arayüzün bir parçasıysa silme işlemi mümkün değildir. Durum buysa eski yöntemi kullanımdan kaldırılmış olarak işaretleyin.
+4. Eski yöntemi silin. Eski yöntem public bir arayüzün (interface) parçasıysa bu adımı gerçekleştirmeyin. Bunun yerine eski yöntemi kullanımdan kaldırılmış (deprecated) olarak işaretleyin.
 
 
 ## Remove Parameter
 
 ### 🙁 Problem
 
-Bir yöntemin gövdesinde parametre kullanılmaz.
+Bir yöntemin gövdesinde, yöntemin parametrelerinden birinin kullanılmaması bir sorundur. Geliştici, parametre listesi ve yöntem gövdesi arasında bağlantıyı kurmaya çalışırken vakit kaybedebilir.
 
 <div align="center">
 
@@ -97,7 +97,7 @@ Bir yöntemin gövdesinde parametre kullanılmaz.
 
 ### 😊 Çözüm
 
-Kullanılmayan parametreyi kaldırın.
+Kullanılmayan parametreyi yöntemden kaldırın.
 
 <div align="center">
 
@@ -106,36 +106,36 @@ Kullanılmayan parametreyi kaldırın.
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Bir yöntem çağrısındaki her parametre, onu okuyan programcıyı bu parametrede hangi bilgilerin bulunduğunu bulmaya zorlar. Ve eğer bir parametre yöntem gövdesinde tamamen kullanılmıyorsa, bu "kafanın kaşınması" boşunadır.
+Bir yöntem çağrısındaki her parametre, onu okuyan programcıyı bu parametrede hangi bilgilerin bulunduğunu ve ne için kullanıldığını bulmaya zorlar. Ve eğer bir parametre yöntem gövdesinde kullanılmıyorsa, bu durumda geliştiricinin kafasının karışması boşunadır.
 
-Ve her durumda, ek parametreler çalıştırılması gereken ekstra kodlardır.
+Ve her durumda, ek parametreler çalıştırılması gereken ekstra kodlardır. Bir parametre belrtildiye, bu metod gövdesinde kullanılmalıdır.
 
-Bazen parametreye ihtiyaç duyulabilecek yöntemde yapılacak değişiklikleri öngörerek geleceğe yönelik parametreler ekliyoruz. Yine de deneyimler, bir parametreyi yalnızca gerçekten ihtiyaç duyulduğunda eklemenin daha iyi olduğunu göstermektedir. Sonuçta, beklenen değişiklikler genellikle sadece beklenen olarak kalır.
+Bazen parametreye ihtiyaç duyulabilecek yöntemde yapılacak değişiklikleri öngörerek geleceğe yönelik parametreler ekleyebiliriz. Yine de deneyimler, bir parametreyi yalnızca gerçekten ihtiyaç duyulduğunda eklemenin daha iyi olduğunu göstermektedir. Sonuçta, beklenen değişiklikler genellikle sadece beklenen olarak kalabilir. Veya, çok uzak bir gelecekte hayata geçebilir.
 
 ### ✅ Avantajları
 
-Bir yöntem yalnızca gerçekten ihtiyaç duyduğu parametreleri içerir.
+Bir yöntem yalnızca gerçekten ihtiyaç duyduğu parametreleri içermelidir.
 
 ### 🖐🏼 Ne Zaman Kullanılmamalı?
 
-Yöntem alt sınıflarda veya üst sınıfta farklı şekillerde uygulanıyorsa ve parametreniz bu uygulamalarda kullanılıyorsa parametreyi olduğu gibi bırakın.
+Yöntem alt sınıflarda veya üst sınıfta farklı şekillerde kullanılıyorsa, ayrıca parametreniz bu kullanımlarda aktif rol alıyorsa parametreyi olduğu gibi bırakın.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Yöntemin bir üst sınıfta mı yoksa alt sınıfta mı tanımlandığını görün. Eğer öyleyse, parametre orada mı kullanılıyor? Parametre bu uygulamalardan birinde kullanılıyorsa, bu yeniden düzenleme tekniğinden uzak durun.
+1. Yöntem, bir üst sınıfta mı yoksa bir alt sınıfta mı tanımlandığına karar verin. Eğer bu iki durumdan biri var ise, burada listelenen tüm adımları diğer sınıflar için de tekrarlamanız gerekmektedir.
 
-2. Bir sonraki adım, yeniden düzenleme işlemi sırasında programın işlevsel kalması açısından önemlidir. Eskisini kopyalayarak yeni bir yöntem oluşturun ve ilgili parametreyi ondan silin. Eski yöntemin kodunu yenisine yapılan bir çağrıyla değiştirin.
+2. Bir sonraki adım, yeniden düzenleme işlemi sırasında programın işlevsel kalması açısından önemlidir. Eskisini kopyalayarak yeni bir yöntem oluşturun ve ilgili parametreyi oluşturduğunuz yöntemden silin. Eski yöntemin kodunu yenisine yapılan bir çağrıyla değiştirin.
 
 3. Eski yönteme yapılan tüm referansları bulun ve bunları yeni yönteme yapılan referanslarla değiştirin.
 
-4. Eski yöntemi silin. Eski yöntem genel bir arayüzün parçasıysa bu adımı gerçekleştirmeyin. Bu durumda eski yöntemi kullanımdan kaldırılmış olarak işaretleyin.
+4. Eski yöntemi silin. Eski yöntem public bir arayüzün (interface) parçasıysa bu adımı gerçekleştirmeyin. Bunun yerine eski yöntemi kullanımdan kaldırılmış (deprecated) olarak işaretleyin.
 
 
 ## Separate Query from Modifier
 
 ### 🙁 Problem
 
-Değer döndüren ama aynı zamanda nesnenin içindeki bir şeyi değiştiren bir yönteminiz var mı?
+Değer döndüren ama aynı zamanda nesnenin içindeki bir şeyi değiştiren bir yönteminiz var mı? Bir yöntemin iki işlemi aynı anda yapması sorun oluşturabilir.
 
 <div align="center">
 
@@ -144,7 +144,7 @@ Değer döndüren ama aynı zamanda nesnenin içindeki bir şeyi değiştiren bi
 
 ### 😊 Çözüm
 
-Yöntemi iki ayrı yönteme bölün. Tahmin edebileceğiniz gibi, bunlardan birinin değeri döndürmesi, diğerinin ise nesneyi değiştirmesi gerekiyor.
+Yönteminizi iki ayrı yönteme bölün. Tahmin edebileceğiniz gibi, bu yöntemlerden biri değeri döndürmesi, diğer yöntem ise nesneyi değiştirmesi gerekiyor.
 
 <div align="center">
 
@@ -152,9 +152,9 @@ Yöntemi iki ayrı yönteme bölün. Tahmin edebileceğiniz gibi, bunlardan biri
 </div>
 
 ### 🤔 Neden Refactoring Uygulanmalı?
-Bu faktoring tekniği, Komut ve Sorgu Sorumluluğu Ayrımını uygular. Bu prensip bize, veri almaktan sorumlu kodu, bir nesnenin içindeki bir şeyi değiştiren koddan ayırmamızı söyler.
+Bu faktoring tekniği, Komut ve Sorgu Sorumluluğu Ayrımını (Command and Query Responsibility Segregation) referans alır. Bu prensip bize, veri almaktan sorumlu kodu, bir nesnenin içindeki bir şeyi değiştiren koddan ayırmamızı önerir.
 
-Veri almak için kullanılan koda sorgu adı verilir. Bir nesnenin görünür durumundaki şeyleri değiştirmeye yarayan koda değiştirici adı verilir. Bir sorgu ve değiştirici birleştirildiğinde, durumunda değişiklik yapmadan veri almanın bir yolu yoktur. Başka bir deyişle, bir soru sorarsınız ve yanıtı alınırken bile değiştirebilirsiniz. Sorguyu çağıran kişi yöntemin "yan etkilerini" bilmediğinde bu sorun daha da ciddi hale gelir ve bu da genellikle çalışma zamanı hatalarına yol açar.
+Veri almak için kullanılan koda sorgu (query) adı verilir. Bir nesnenin görünür durumundaki şeyleri değiştirmeye yarayan koda değiştirici (modifier) adı verilir. Bir sorgu ve değiştirici birleştirildiğinde, state üzerinde değişiklik yapmadan veri almanın bir yolu yoktur. Başka bir deyişle, bir soru sorarsınız ve yanıtı alınırken bile state değiştirmiş olabilirsiniz. Sorguyu çağıran kişi yöntemin yan etkilerini bilmediğinde bu sorun daha da ciddi hale gelir ve bu da genellikle çalışma zamanı hatalarına yol açar.
 
 Ancak yan etkilerin yalnızca bir nesnenin görünür durumunu değiştiren değiştiriciler olması durumunda tehlikeli olduğunu unutmayın. Bunlar, örneğin bir nesnenin genel arayüzünden erişilebilen alanlar, bir veritabanındaki giriş, dosyalar vb. olabilir. Eğer bir değiştirici yalnızca karmaşık bir işlemi önbelleğe alır ve bunu bir sınıfın özel alanı içine kaydederse, bu durum neredeyse hiç bir yan etki yaratmaz. Etkileri.
 
