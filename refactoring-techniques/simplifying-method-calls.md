@@ -221,7 +221,7 @@ Benzer yöntemleriniz varsa, muhtemelen bunun gerektirdiği tüm sonuçlarla bir
 
 ### 🙁 Problem
 
-Bir yöntem, her biri bir parametrenin değerine bağlı olarak çalıştırılan parçalara bölünür.
+Bir yöntem, parametrenin her bir değerine bağlı olarak çalıştırılan farklı parçalara bölünmesi kodunuzu kirli gösterecektir.
 
 ```java
 void setValue(String name, int value) {
@@ -239,7 +239,7 @@ void setValue(String name, int value) {
 
 ### 😊 Çözüm
 
-Yöntemin ayrı bölümlerini kendi yöntemlerine çıkarın ve bunları orijinal yöntem yerine çağırın.
+Yöntemin içerisinde bulunan ayrı bölümler için, ayrı birer yöntemlerine yöntem oluşturun. Oluşturduğunuz yöntemleri, orijinal yöntem yerine çağırın.
 
 ```java
 void setHeight(int arg) {
@@ -252,29 +252,28 @@ void setWidth(int arg) {
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Parametreye bağlı değişkenler içeren bir yöntem çok büyük bir hızla büyüdü. Her dalda önemsiz olmayan kod çalıştırılır ve çok nadiren yeni varyantlar eklenir.
+Parametreye bağlı değişkenler içeren bir yöntem çok büyük bir hızla büyüyecektir. Her parçada önemli kod parçaları çalıştırılır. Bununla beraber, çok nadiren yeni varyantlar eklenir.
 
 ### ✅ Avantajları
 
-Kodun okunabilirliğini artırır. startEngine() işlevinin amacını anlamak setValue("engineEnabled", true) yönteminden çok daha kolaydır.
+Kodun okunabilirliğini artırır. `startEngine()` işlevinin amacını anlamak `setValue("engineEnabled", true)` yönteminden çok daha kolaydır.
 
 ### 🖐🏼 Ne Zaman Kullanılmamalı?
 
-Bir yöntem nadiren değiştiriliyorsa ve içine yeni değişkenler eklenmemişse, parametreyi açık yöntemlerle değiştirmeyin.
+Bir yöntem nadiren değiştiriliyorsa ve içine yeni değişkenler eklenmemişse dokunmam daha sağlıklı olacaktır.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Yöntemin her çeşidi için ayrı bir yöntem oluşturun. Bu yöntemleri, ana yöntemdeki bir parametrenin değerine göre çalıştırın.
-2. Orijinal yöntemin çağrıldığı tüm yerleri bulun. Bu yerlerde parametreye bağlı yeni değişkenlerden biri için çağrı yapın.
-
-3. Orijinal yönteme çağrı kalmadığında onu silin.
+1. Yöntemin parametrelere bağlı, her bir parçası için yeni bir yöntem oluşturun. Bu yöntemleri, ana yöntemdeki bir parametrenin değerine göre çalıştırın.
+2. Orijinal yöntemin çağrıldığı tüm yerleri bulun. Bu yerlerde parametreye bağlı yeni değişkenlerden biri için çağrıda bulunan.
+3. Orijinal yöntem için bir çağrı kalmadığında orijinal yöntemi silin.
 
 
 ## Preserve Whole Object
 
 ### 🙁 Problem
 
-Bir nesneden birkaç değer alırsınız ve bunları parametre olarak bir yönteme aktarırsınız.
+Bir objeden birkaç değer alıyorsanız ve bunları parametre olarak bir yönteme aktarıyorsanız. Bu kodunuzu gereksiz uzun gösterecektir.
 
 ```java
 int low = daysTempRange.getLow();
@@ -284,7 +283,7 @@ boolean withinPlan = plan.withinRange(low, high);
 
 ### 😊 Çözüm
 
-Bunun yerine nesnenin tamamını aktarmayı deneyin.
+Bunun yerine nesnenin tamamını parametre olarak aktarmayı deneyin.
 
 ```java
 boolean withinPlan = plan.withinRange(daysTempRange);
@@ -292,33 +291,34 @@ boolean withinPlan = plan.withinRange(daysTempRange);
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Sorun şu ki, yönteminiz her çağrılmadan önce, gelecekteki parametre nesnesinin yöntemlerinin çağrılması gerekir. Bu yöntemler veya yöntem için elde edilen veri miktarı değiştirilirse, programda bu tür bir düzine yeri dikkatlice bulmanız ve bu değişiklikleri her birinde uygulamanız gerekecektir.
+Sorun şu ki, yönteminiz her çağrılmadan önce, parametre nesnesinin yöntemlerinin çağrılması gerekir. Bu yöntemler veya yöntem için elde edilen veri miktarı değiştirilirse, programda bu tür bir düzine yeri dikkatlice bulmanız ve bu değişiklikleri her birinde uygulamanız gerekecektir.
 
-Bu yeniden düzenleme tekniğini uyguladıktan sonra, gerekli tüm verileri elde etmek için gereken kod tek bir yerde, yani yöntemin kendisinde depolanacaktır.
+Bu refactoring tekniğini uyguladıktan sonra, gerekli tüm verileri elde etmek için gereken kod tek bir yerde, yani yöntemin kendisinde depolanacaktır. Bu da olası değişikliklerde tek bir yerde değişiklik yapma esnekliği sunacaktır.
 
 ### ✅ Avantajları
-- Karmaşık parametreler yerine anlaşılır bir isme sahip tek bir nesne görüyorsunuz.
 
-- Yöntemin bir nesneden daha fazla veriye ihtiyacı varsa, yöntemin kullanıldığı tüm yerleri yeniden yazmanız gerekmez; yalnızca yöntemin kendi içinde yazmanız gerekir.
+- Karmaşık parametreler yerine anlaşılır bir isme sahip tek bir nesne ile uğraşmak yeterli olacaktır.
+
+- Yöntemin bir nesneden daha fazla veriye ihtiyacı varsa, yöntemin kullanıldığı tüm yerleri yeniden yazmanız gerekmez; yalnızca yöntemin kendi içinde yazmanız yeterlidir.
 
 ### 🚫 Dezavantajları
 
-Bazen bu dönüşüm bir yöntemin daha az esnek hale gelmesine neden olur: önceden yöntem birçok farklı kaynaktan veri alabiliyordu ancak şimdi yeniden düzenleme nedeniyle kullanımını yalnızca belirli bir arayüze sahip nesnelerle sınırlıyoruz.
+Bazen bu dönüşüm bir yöntemin daha az esnek hale gelmesine neden olur: önceden yöntem birçok farklı kaynaktan veri alabiliyordu ancak şimdi yeniden düzenleme nedeniyle kullanımını yalnızca belirli bir arayüze sahip nesnelerle sınırlıyoruz. Bu da yöntemin kullanımını güçleştirecektir.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Gerekli değerleri alabileceğiniz nesne için yöntemde bir parametre oluşturun.
+1. Yöntem içinde kullanmak üzere, gerekli değerleri alabileceğiniz nesne için bir parametre oluşturun.
 
 2. Şimdi eski parametreleri yöntemden birer birer kaldırmaya başlayın ve bunları parametre nesnesinin ilgili yöntemlerine yapılan çağrılarla değiştirin. Bir parametrenin her değiştirilmesinden sonra programı test edin.
 
-3. Yöntem çağrısından önce gelen parametre nesnesinden alıcı kodunu silin.
+3. Yöntem çağrısından önce gelen parametre nesnesinden alıcı yani getter kodunu silin.
 
 
 ## Replace Parameter with Method Call
 
 ### 🙁 Problem
 
-Bir sorgu yöntemini çağırmak ve sonuçlarını başka bir yöntemin parametreleri olarak iletmek, bu yöntem ise sorguyu doğrudan çağırabilir.
+Bir sorgu yöntemini çağırmak ve sonuçlarını başka bir yöntemin parametreleri olarak iletmek oldukça sık rastlanan bir pattern'dir. Bununla beraber bir yöntem ise sorguyu doğrudan çağırabilir.
 
 ```java
 int basePrice = quantity * itemPrice;
@@ -329,7 +329,7 @@ double finalPrice = discountedPrice(basePrice, seasonDiscount, fees);
 
 ### 😊 Çözüm
 
-Değeri bir parametre aracılığıyla iletmek yerine, yöntem gövdesinin içine bir sorgu çağrısı yerleştirmeyi deneyin.
+Değeri bir parametre aracılığıyla iletmek yerine, yöntem gövdesinin içine bir sorgu çağrısı yerleştirmeyi kodun okunurluğu arttıracaktır. Bununla beraber ekstra değişken tanımlamalarının önünce geçer.
 
 ```java
 int basePrice = quantity * itemPrice;
@@ -338,19 +338,19 @@ double finalPrice = discountedPrice(basePrice);
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Uzun bir parametre listesini anlamak zordur. Buna ek olarak, bu tür yöntemlere yapılan çağrılar genellikle bir dizi kademeye benzer; gezinmesi zor olan ancak yönteme aktarılması gereken dolambaçlı ve canlandırıcı değer hesaplamaları vardır. Yani eğer bir parametre değeri bir yöntem yardımıyla hesaplanabiliyorsa bunu yöntemin kendi içinde yapın ve parametreden kurtulun.
+Uzun bir parametre listesini anlamak zordur. Ek olarak, bu tür yöntemlere yapılan çağrılar genellikle, gezinmesi zor ancak yönteme aktarılması gereken değer hesaplamaları ile bir dizi basamağa benzemektedir. Bu nedenle, bir yöntem yardımıyla bir parametre değeri hesaplanabiliyor ise, bunu yöntemin içinde yapın ve bu esktra parametreden kurtulun.
 
 ### ✅ Avantajları
 
-Gereksiz parametrelerden kurtuluyoruz ve yöntem çağrılarını basitleştiriyoruz. Bu tür parametreler genellikle şu anki proje için değil, asla gelmeyecek gelecekteki ihtiyaçlar dikkate alınarak oluşturulur.
+Gereksiz parametrelerden kurtuluyoruz ve yöntem çağrılarını basitleştiriyoruz. Bu tür parametreler genellikle şu anki proje için değil, asla gelmeyecek gelecekteki ihtiyaçlar dikkate alınarak oluşturulmaktadır.
 
 ### 🚫 Dezavantajları
 
-Yöntemi yeniden yazmanıza neden olacak diğer ihtiyaçlar için yarın parametreye ihtiyacınız olabilir.
+Yöntemi yeniden yazmanıza neden olacak diğer ihtiyaçlar için yakın bir gelecekte parametreye ihtiyacınız olabilir.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Değer elde eden kodun geçerli yöntemdeki parametreleri kullanmadığından emin olun çünkü bu parametreler başka bir yöntemin içinden kullanılamayacaktır. Bu durumda kodun taşınması mümkün değildir.
+1. Değer elde eden kodun geçerli yöntemdeki parametreleri kullanmadığından emin olun. Çünkü bu parametreler başka bir yöntemin içinden kullanılamayacaktır. Bu durumda kodun taşınması mümkün değildir.
 
 2. İlgili kod tek bir yöntem veya işlev çağrısından daha karmaşıksa, bu kodu yeni bir yöntemde yalıtmak ve çağrıyı basitleştirmek için **Extract Method** yöntemini kullanın.
 
@@ -363,11 +363,12 @@ Yöntemi yeniden yazmanıza neden olacak diğer ihtiyaçlar için yarın paramet
 
 ### 🙁 Problem
 
-Yöntemleriniz yinelenen bir parametre grubu içeriyor.
+Yöntemleriniz yinelenen bir parametre grubu içeriyorsa bu durum bir sorun olabilir.
 
 <div align="center">
 
 ![](https://refactoring.guru/images/refactoring/diagrams/Introduce%20Parameter%20Object%20-%20Before.png)
+
 </div>
 
 ### 😊 Çözüm
@@ -377,27 +378,28 @@ Bu parametreleri bir nesneyle değiştirin.
 <div align="center">
 
 ![](https://refactoring.guru/images/refactoring/diagrams/Introduce%20Parameter%20Object%20-%20After.png)
+
 </div>
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Birden fazla yöntemde sıklıkla aynı parametre gruplarıyla karşılaşılır. Bu, hem parametrelerin hem de ilgili işlemlerin kod çoğaltılmasına neden olur. Parametreleri tek bir sınıfta birleştirerek, bu verileri işlemeye yönelik yöntemleri de oraya taşıyabilir ve diğer yöntemleri bu koddan kurtarabilirsiniz.
+Birden fazla yöntemde sıklıkla aynı parametre gruplarıyla karşılaşılabilir. Bu durum, hem parametrelerin hem de ilgili işlemlerin kod tekrarına neden olur. Parametreleri tek bir sınıfta birleştirerek, bu verileri işlemeye yönelik yöntemleri de oraya taşıyabiliriz. Böylelikle diğer yöntemleri bu koddan kurtarabilirsiniz.
 
 ### ✅ Avantajları
 
-- Daha okunabilir kod. Karmaşık parametreler yerine anlaşılır bir isme sahip tek bir nesne görüyorsunuz.
+- Daha okunabilir kod. Karmaşık parametreler yerine anlaşılır bir isme sahip tek bir nesne ile ilgilenmeniz gerekir.
 
-- Oraya buraya dağılmış aynı parametre grupları, kendi türlerinde kod çoğaltmaları yaratır: Aynı kod çağrılmazken, sürekli olarak aynı parametre ve argüman gruplarıyla karşılaşılır.
+- Farklı yerlere dağılmış aynı parametre grupları, kendi türlerinde kod tekrarları yaratır: Aynı kod çağrılmazken, sürekli olarak aynı parametre ve argüman gruplarıyla karşılaşılır. Tüm bunları tek bir alan üzerinden yönetmek daha kolay olacaktır.
 
 ### 🚫 Dezavantajları
 
-Yalnızca verileri yeni bir sınıfa taşırsanız ve herhangi bir davranışı veya ilgili işlemi oraya taşımayı planlamıyorsanız, bu bir **Data Class** kokusu almaya başlar.
+Yalnızca verileri yeni bir sınıfa taşımayı planlayıp, herhangi bir davranışı veya ilgili işlemi bu sınıfa taşımayı planlamıyorsanız, bu bir **Data Class** kokusu olmaya başlar.
 
 ### 🤯 Nasıl Refactor Edilir?
 
 1. Parametre grubunuzu temsil edecek yeni bir sınıf oluşturun. Sınıfı değişmez hale getirin.
 
-2. Yeniden düzenlemek istediğiniz yöntemde, parametre nesnenizin aktarılacağı **Add Parameter** tekniğini kullanın. Tüm yöntem çağrılarında eski yöntem parametrelerinden oluşturulan nesneyi bu parametreye iletin.
+2. Yeniden düzenlemek istediğiniz yöntemde, parametre nesnenizin aktarılacağı **Add Parameter** tekniğini kullanın. Tüm yöntem çağrılarında, eski yöntem parametrelerinden oluşturulan yeni nesneyi bu parametreye iletin.
 
 3. Şimdi eski parametreleri yöntemden birer birer silmeye başlayın ve bunları kodda parametre nesnesinin alanlarıyla değiştirin. Her parametre değişiminden sonra programı test edin.
 
@@ -408,16 +410,17 @@ Yalnızca verileri yeni bir sınıfa taşırsanız ve herhangi bir davranışı 
 
 ### 🙁 Problem
 
-Bir alanın değeri yalnızca oluşturulduğunda ayarlanmalı ve daha sonra hiçbir zaman değiştirilmemelidir.
+Bir field'ın değeri yalnızca oluşturulduğunda ayarlanmalı ve daha sonra hiçbir zaman değiştirilmemelidir. Böyle bir durumda bu koşulu nasıl sağlayabilirsiniz ki?
 
 <div align="center">
 
 ![](https://refactoring.guru/images/refactoring/diagrams/Remove%20Setting%20Method%20-%20Before.png)
+
 </div>
 
 ### 😊 Çözüm
 
-Bu nedenle alanın değerini ayarlayan yöntemleri kaldırın.
+Oldukça basit! Field'ın değerini atayan veya değiştiren yöntemleri kaldırın.
 
 <div align="center">
 
@@ -426,17 +429,17 @@ Bu nedenle alanın değerini ayarlayan yöntemleri kaldırın.
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Bir alanın değerinde herhangi bir değişiklik yapılmasını önlemek istiyorsunuz.
+Bir alanın değerinde herhangi bir değişiklik yapılmasını önlemek istiyorsunuz. Ancak bunu nasıl sağlayacağınız konusunda kararsız iseniz, field'ın değerini değiştirilebilecek tüm yöntemleri kaldırın.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Bir alanın değeri yalnızca yapıcıda değiştirilebilir olmalıdır. Yapıcı değeri ayarlamak için bir parametre içermiyorsa bir tane ekleyin.
+1. Bir alanın değeri yalnızca yapıcıda (constructor) değiştirilebilir olmalıdır. Yapıcı değeri ayarlamak için herhangi bir parametre içermiyorsa bir tane ekleyin.
 
 2. Tüm ayarlayıcı (`setter`) aramalarını bulun.
 
-	- Geçerli sınıfın yapıcısına (`constructor`) yönelik bir çağrının hemen ardından bir ayarlayıcı (`setter`) çağrısı bulunursa, argümanını yapıcı (`constructor`) çağrısına taşıyın ve ayarlayıcıyı kaldırın.
+	- Geçerli sınıfın yapıcısına (`constructor`) yönelik bir çağrının hemen ardından bir ayarlayıcı (`setter`) çağrısı bulunursa, argümanını yapıcı (`constructor`) çağrısına taşıyın. Hemen sonrasında ayarlayıcıyı yani setter'ı kaldırın.
 
-	- Yapıcıdaki (`constructor`) ayarlayıcı (`setter`) çağrılarını, alana doğrudan erişimle değiştirin.
+	- Yapıcıdaki (`constructor`) ayarlayıcı (`setter`) çağrılarını, field'a doğrudan erişimle değiştirin.
 
 3. Ayarlayıcıyı (`setter`) silin.
 
@@ -444,7 +447,7 @@ Bir alanın değerinde herhangi bir değişiklik yapılmasını önlemek istiyor
 
 ### 🙁 Problem
 
-Bir yöntem diğer sınıflar tarafından kullanılmaz veya yalnızca kendi sınıf hiyerarşisi içinde kullanılır.
+Bir yöntem diğer sınıflar tarafından kullanılmamasını veya yalnızca kendi sınıf hiyerarşisi içinde kullanılmasını isteyebilirsiniz. Veya proje sizden bu gereksinimi bekliyor olabilir.
 
 <div align="center">
 
@@ -453,7 +456,8 @@ Bir yöntem diğer sınıflar tarafından kullanılmaz veya yalnızca kendi sın
 
 ### 😊 Çözüm
 
-Yöntemi özel veya korumalı yapın.
+Yöntemi private veya protected yapın.
+
 <div align="center">
 
 ![](https://refactoring.guru/images/refactoring/diagrams/Hide%20Method%20-%20After.png)
@@ -461,9 +465,9 @@ Yöntemi özel veya korumalı yapın.
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Çoğu zaman, değerleri alma ve ayarlamaya yönelik yöntemleri gizleme ihtiyacı, özellikle yalnızca veri kapsüllemenin ötesinde çok az şey ekleyen bir sınıfla başladıysanız, ek davranış sağlayan daha zengin bir arayüzün geliştirilmesinden kaynaklanmaktadır.
+Çoğu zaman, değerleri almak ve ayarlamak için yöntemleri gizleme ihtiyacı, özellikle yalnızca veri kapsüllemenin biraz ötesine eklenen bir sınıfla başladıysanız, ek davranış sağlayan daha zengin bir arayüz geliştirilmesinden kaynaklanır.
 
-Sınıfta yeni davranışlar yerleşik hale geldikçe, genel alıcı ve ayarlayıcı yöntemlerin artık gerekli olmadığını ve gizlenebileceğini görebilirsiniz. Alıcı veya ayarlayıcı yöntemlerini özel yaparsanız ve değişkenlere doğrudan erişim uygularsanız yöntemi silebilirsiniz.
+Sınıfa yeni davranışlar eklendikçe, genel alıcı ve ayarlayıcı yöntemlerinin artık gerekli olmadığını ve gizlenebileceğini görebilirsiniz. Alıcı veya ayarlayıcı yöntemlerini private yaparsanız ve değişkenlere doğrudan erişim uygularsanız, yöntemi silebilirsiniz.
 
 ### ✅ Avantajları
 
@@ -473,7 +477,7 @@ Sınıfta yeni davranışlar yerleşik hale geldikçe, genel alıcı ve ayarlay�
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Düzenli olarak özel hale getirilebilecek yöntemleri bulmaya çalışın. Statik kod analizi ve iyi birim testi kapsamı büyük bir avantaj sağlayabilir.
+1. Düzenli olarak private hale getirilebilecek yöntemleri bulmaya çalışın. Statik kod analizi ve iyi birim testi kapsamı büyük bir avantaj sağlayabilir.
 
 2. Her yöntemi mümkün olduğunca private yapın.
 
@@ -481,7 +485,7 @@ Sınıfta yeni davranışlar yerleşik hale geldikçe, genel alıcı ve ayarlay�
 
 ### 🙁 Problem
 
-Nesne alanlarındaki parametre değerlerini ayarlamaktan daha fazlasını yapan karmaşık bir kurucunuz var.
+Nesne alanlarındaki parametre değerlerini ayarlamaktan çok daha fazlasını yapan karmaşık bir kurucunuz (constructor) var. Bu olması gerekenden biraz fazla kompleks bir kurucuya sebep olacaktır.
 
 ```java
 class Employee {
@@ -494,7 +498,7 @@ class Employee {
 
 ### 😊 Çözüm
 
-Bir fabrika yöntemi oluşturun ve bunu yapıcı çağrılarını değiştirmek için kullanın.
+Bir fabrika yöntemi oluşturun ve yapıcı çağrılarını değiştirmek için oluşturduğunuz yöntemi kullanın.
 
 ```java
 class Employee {
@@ -509,36 +513,36 @@ class Employee {
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Bu yeniden düzenleme tekniğini kullanmanın en belirgin nedeni **Replace Type Code with Subclasses** tekniği ile ilgilidir.
+Bu refactoring tekniğini kullanmanın en belirgin nedeni **Replace Type Code with Subclasses** tekniği ile ilgilidir.
 
-Daha önce bir nesnenin oluşturulduğu ve kodlanan türün değerinin ona aktarıldığı kodunuz var. Yeniden düzenleme yöntemini kullandıktan sonra birkaç alt sınıf ortaya çıktı ve kodlanan türün değerine bağlı olarak bunlardan nesneler oluşturmanız gerekiyor. Orijinal kurucuyu, alt sınıf nesnelerini döndürecek şekilde değiştirmek imkansızdır; bunun yerine, gerekli sınıfların nesnelerini döndürecek ve ardından orijinal kurucuya yapılan tüm çağrıların yerini alacak statik bir fabrika yöntemi yaratırız.
+Daha önce bir nesnenin oluşturulduğu ve kodlanan türün değerinin ona aktarıldığı kodunuz olduğunu düşünelim. Refactoring yöntemini kullandıktan sonra birkaç alt sınıf ortaya çıkacaktır. Kodlanan türün değerine bağlı olarak bunlardan nesneler oluşturmanız gerekebilir. Orijinal kurucuyu (constructor), alt sınıf nesnelerini döndürecek şekilde değiştirmek imkansızdır. Bu yüzden, gerekli sınıfların nesnelerini döndürecek ve ardından orijinal kurucuya yapılan tüm çağrıların yerini alacak statik bir fabrika yöntemi oluşturmak sağlıklı bir çözüm olabilir.
 
-Fabrika yöntemleri, inşaatçıların göreve uygun olmadığı diğer durumlarda da kullanılabilir. **Change Value to Reference** tekniği kullanırken önemli olabilirler. Ayrıca parametre sayısı ve türünün ötesine geçen çeşitli oluşturma modlarını ayarlamak için de kullanılabilirler.
+Fabrika yöntemleri, kurucuların (constructors) göreve uygun olmadığı diğer durumlarda da kullanılabilir. **Change Value to Reference** tekniği kullanırken önemli olabilirler. Ayrıca parametre sayısı ve türünün ötesine geçen çeşitli oluşturma modlarını ayarlamak için de kullanılabilirler.
 
 ### ✅ Avantajları
 
-- Bir fabrika yöntemi mutlaka çağrıldığı sınıfın bir nesnesini döndürmez. Genellikle bunlar, yönteme verilen argümanlara göre seçilen alt sınıflar olabilir.
+- Bir fabrika yöntemi mutlaka çağrıldığı sınıfın bir nesnesini döndğrmek zorunda değildir. Genellikle bunlar, yönteme verilen argümanlara göre seçilen alt sınıflar olabilir.
 
 - Bir fabrika yönteminin neyi ve ne yaptığını nasıl döndürdüğünü açıklayan daha iyi bir adı olabilir; örneğin `Troops::GetCrew(myTank)`.
 
-- Her zaman yeni bir örnek oluşturan yapıcının aksine, fabrika yöntemi önceden oluşturulmuş bir nesneyi döndürebilir.
+- Her zaman yeni bir instance oluşturan yapıcının aksine, fabrika yöntemi önceden oluşturulmuş bir nesneyi döndürebilir.
 
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Bir fabrika yöntemi oluşturun. Mevcut kurucuya bir çağrı yapın.
+1. Bir fabrika yöntemi oluşturun. Mevcut kurucuya (constructor) bir çağrı yapın.
 
 2. Tüm yapıcı çağrılarını fabrika yöntemine yapılan çağrılarla değiştirin.
 
-3. Yapıcıyı private olarak bildirin.
+3. Yapıcıyı private olarak işaretleyin.
 
-4. Yapıcı kodunu araştırın ve geçerli sınıftan bir nesnenin oluşturulmasıyla doğrudan ilgili olmayan kodu izole etmeye çalışın ve bu kodu fabrika yöntemine taşıyın.
+4. Yapıcı kodunu araştırın ve geçerli sınıftan bir nesnenin oluşturulmasıyla doğrudan ilgili olmayan kodu izole etmeye çalışın. Daha sonrasında, bu kodu fabrika yöntemine taşıyın.
 
 ## Replace Error Code with Exception
 
 ### 🙁 Problem
 
-Bir yöntem, hatayı belirten özel bir değer mi döndürüyor?
+Bir yöntem, hatayı belirten özel bir değer mi (-1 gibi) döndürüyor? Böyle bir çözüm yolu kodun anlaşılırlığını düşürecektir. Projeye sonradan katılan biri döndürülen değerin nedenini anlamakta güçlük çekebilir.
 
 ```java
 int withdraw(int amount) {
@@ -554,7 +558,7 @@ int withdraw(int amount) {
 
 ### 😊 Çözüm
 
-Bunun yerine bir hata atın.
+Bunun yerine bir hata fırlatın.
 
 ```java
 void withdraw(int amount) throws BalanceException {
@@ -567,19 +571,19 @@ void withdraw(int amount) throws BalanceException {
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Hata kodlarının döndürülmesi, prosedürel programlamanın artık kullanılmayan bir özelliğidir. Modern programlamada hata işleme, istisna adı verilen özel sınıflar tarafından gerçekleştirilir. Bir sorun ortaya çıkarsa, bir hata "atarsınız" ve bu daha sonra istisna işleyicilerden biri tarafından "yakalanır". Normal şartlarda göz ardı edilen özel hata işleme kodu devreye girerek yanıt verir.
+Hata kodlarının döndürülmesi, prosedürel programlamanın artık kullanılmayan bir özelliğidir. Modern programlamada hata işleme, istisna (exception) adı verilen özel sınıflar tarafından gerçekleştirilir. Bir sorun ortaya çıkarsa, bir hata "fırlatırsınız" (throw) ve bu daha sonra istisna işleyicilerden biri tarafından yakalanır (caught). Normal şartlarda göz ardı edilen özel hata işleme kodu devreye girerek yanıt verir.
 
 ### ✅ Avantajları
 
-- Çeşitli hata kodlarını kontrol etmek için kodu çok sayıda koşul koşulundan kurtarır. İstisna işleyicileri, normal yürütme yollarını anormal olanlardan ayırmanın çok daha kısa ve öz bir yoludur.
+- Çeşitli hata kodlarını kontrol etmek, kodu çok sayıda koşulundan kurtarır. İstisna işleyicileri, normal yürütme yollarını anormal olanlardan ayırmanın çok daha kısa ve öz bir yoludur.
 
 - İstisna sınıfları kendi yöntemlerini uygulayabilir, dolayısıyla hata işleme işlevselliğinin bir kısmını (hata mesajları göndermek gibi) içerir.
 
-- İstisnalardan farklı olarak, bir yapıcının yalnızca yeni bir nesne döndürmesi gerektiğinden hata kodları bir yapıcıda kullanılamaz.
+- İstisnalardan farklı olarak, bir yapıcının yalnızca yeni bir nesne döndürmesi gerektiğinden, hata kodları bir yapıcıda kullanılamaz.
 
 ### 🚫 Dezavantajları
 
-Bir hata işleyicisi goto benzeri bir koltuk değneğine dönüşebilir. Bundan kaçının! Kod yürütmeyi yönetmek için istisnalar kullanmayın. İstisnalar yalnızca bir hata veya kritik durum hakkında bilgi vermek için atılmalıdır.
+Bir hata işleyicisi `goto` benzeri bir koltuk değneğine dönüşebilir. Bundan kaçının! Kod yürütmeyi yönetmek için istisnalar kullanmayın. İstisnalar yalnızca bir hata veya kritik durum hakkında bilgi vermek için atılmalıdır.
 
 ### 🤯 Nasıl Refactor Edilir?
 
@@ -587,7 +591,7 @@ Bu refactoring adımlarını aynı anda yalnızca bir hata kodu için gerçekle�
 
 1. Hata kodları döndüren bir yönteme yapılan tüm çağrıları bulun ve hata kodunu kontrol etmek yerine onu `try/catch` bloklarıyla sarın.
 
-2. Yöntemin içinde bir hata kodu döndürmek yerine bir istisna atın.
+2. Yöntemin içinde bir hata kodu döndürmek yerine bir istisna (exception) atın.
 
 3. Yöntem imzasını, atılan istisna hakkında (`@throws` bölümü) bilgi içerecek şekilde değiştirin.
 
@@ -596,7 +600,7 @@ Bu refactoring adımlarını aynı anda yalnızca bir hata kodu için gerçekle�
 
 ### 🙁 Problem
 
-Basit bir testin işi yapabileceği bir yere hata mı atıyorsunuz?
+Basit bir testin işi yapabileceği bir yere hata mı atıyorsunuz? Bu konuda oturup düşünmeye değer gibi!
 
 ```java
 double getValueForPeriod(int periodNumber) {
@@ -610,7 +614,7 @@ double getValueForPeriod(int periodNumber) {
 
 ### 😊 Çözüm
 
-İstisnayı bir durum testiyle değiştirin.
+İstisnayı bir koşul testiyle değiştirin.
 
 ```java
 double getValueForPeriod(int periodNumber) {
