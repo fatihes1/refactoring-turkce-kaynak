@@ -152,7 +152,7 @@ Yönteminizi iki ayrı yönteme bölün. Tahmin edebileceğiniz gibi, bu yöntem
 </div>
 
 ### 🤔 Neden Refactoring Uygulanmalı?
-Bu faktoring tekniği, Komut ve Sorgu Sorumluluğu Ayrımını (Command and Query Responsibility Segregation) referans alır. Bu prensip bize, veri almaktan sorumlu kodu, bir nesnenin içindeki bir şeyi değiştiren koddan ayırmamızı önerir.
+Bu refaktoring tekniği, Komut ve Sorgu Sorumluluğu Ayrımını (Command and Query Responsibility Segregation) referans alır. Bu prensip bize, veri almaktan sorumlu kodu, bir nesnenin içindeki bir şeyi değiştiren koddan ayırmamızı önerir.
 
 Veri almak için kullanılan koda sorgu (query) adı verilir. Bir nesnenin görünür durumundaki şeyleri değiştirmeye yarayan koda değiştirici (modifier) adı verilir. Bir sorgu ve değiştirici birleştirildiğinde, state üzerinde değişiklik yapmadan veri almanın bir yolu yoktur. Başka bir deyişle, bir soru sorarsınız ve yanıtı alınırken bile state değiştirmiş olabilirsiniz. Sorguyu çağıran kişi yöntemin yan etkilerini bilmediğinde bu sorun daha da ciddi hale gelir ve bu da genellikle çalışma zamanı hatalarına yol açar.
 
@@ -160,7 +160,7 @@ Ancak yan etkilerin yalnızca bir nesnenin görünür durumunu değiştiren değ
 
 ### ✅ Avantajları
 
-Programınızın durumunu değiştirmeyen bir sorgunuz varsa, yalnızca yöntemi çağırmanızın neden olduğu sonuçtaki istenmeyen değişiklikler konusunda endişelenmenize gerek kalmadan, onu istediğiniz kadar çağırabilirsiniz.
+Programınızın state değerini değiştirmeyen bir sorgunuz varsa, yalnızca yöntemi çağırmanızın neden olduğu sonuçtaki istenmeyen değişiklikler konusunda endişelenmenize gerek kalmaz. Yöntemi istediğiniz kadar çağırabilirsiniz.
 
 ### 🚫 Dezavantajları
 
@@ -168,20 +168,20 @@ Bazı durumlarda bir komutu gerçekleştirdikten sonra veri almak daha uygun olu
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Orijinal yöntemin yaptığını döndürmek için yeni bir sorgu yöntemi oluşturun.
+1. Orijinal yöntemin yaptığını döndürmek için yeni bir sorgu (query) yöntemi oluşturun.
 
-2. Orijinal yöntemi, yalnızca yeni sorgu yönteminin çağrılmasının sonucunu döndürecek şekilde değiştirin.
+2. Orijinal yöntemi, yalnızca yeni oluşturduğunuz sorgu yönteminin çağıracak ve sonucunu döndürecek şekilde değiştirin.
 
-3. Orijinal yönteme yapılan tüm referansları sorgu yöntemine yapılan bir çağrıyla değiştirin. Bu satırın hemen öncesinde değiştirici yönteme bir çağrı yapın. Bu, orijinal yöntemin koşullu bir operatör veya döngü durumunda kullanılması durumunda sizi yan etkilerden kurtaracaktır.
+3. Orijinal yönteme yapılan tüm referansları sorgu yöntemine yapılan bir çağrıyla değiştirin. Bu satırın hemen öncesinde değiştirici (modifier) yönteme bir çağrı yapın. Bu yöntem, orijinal yöntemin koşullu bir operatör veya döngü durumunda kullanılması durumunda sizi yan etkilerden kurtaracaktır.
 
-4. Artık uygun bir değiştirici yöntem haline gelen orijinal yöntemdeki değer döndüren koddan kurtulun.
+4. Artık uygun bir değiştirici yöntem haline gelen orijinal yönteminizde bulunan değer döndüren koddan kurtulun.
 
 
 ## Parameterize Method
 
 ### 🙁 Problem
 
-Birden çok yöntem, yalnızca iç değerleri, sayıları veya işlemleri açısından farklı olan benzer eylemleri gerçekleştirir.
+Birden çok yönteminiz olduğu bir senaryo düşünün. Bu yöntemler, yalnızca dahili (internal) değerleri, sayıları veya işlemleri açısından farklı olan ancak temelde benzer eylemleri gerçekleştirebilir. Böyle bir durumda gereksiz bir kod süreci
 
 <div align="center">
 
@@ -190,7 +190,7 @@ Birden çok yöntem, yalnızca iç değerleri, sayıları veya işlemleri açıs
 
 ### 😊 Çözüm
 
-Gerekli özel değeri iletecek bir parametre kullanarak bu yöntemleri birleştirin.
+Gerekli değeri iletecek bir parametre kullanın ve  bu yöntemleri birleştirin.
 
 <div align="center">
 
@@ -199,19 +199,19 @@ Gerekli özel değeri iletecek bir parametre kullanarak bu yöntemleri birleşti
 
 ### 🤔 Neden Refactoring Uygulanmalı?
 
-Benzer yöntemleriniz varsa, muhtemelen bunun gerektirdiği tüm sonuçlarla birlikte yinelenen kodunuz vardır.
+Benzer yöntemleriniz varsa, muhtemelen bunun gerektirdiği tüm sonuçlarla birlikte tekrarlı kodunuz vardır.
 
-Üstelik bu işlevselliğin başka bir versiyonunu eklemeniz gerekiyorsa başka bir yöntem daha oluşturmanız gerekecektir. Bunun yerine mevcut yöntemi farklı bir parametreyle çalıştırabilirsiniz.
+Üstelik bu işlevselliğin başka bir versiyonunu eklemeniz gerekiyorsa başka bir yöntem daha oluşturmanız gerekecektir. Bunun yerine mevcut yöntemi farklı bir parametreyle çalıştırabilirsiniz. Bu işlemi yapmak, kodununuz daha stabil ve anlaşılır olmasını sağlayacaktır.
 
 ### 🚫 Dezavantajları
 
-- Bazen bu yeniden düzenleme tekniği çok ileri götürülebilir ve birden fazla basit yöntem yerine uzun ve karmaşık bir ortak yöntem ortaya çıkabilir.
+- Bazen bu yeniden düzenleme tekniği çok ileri götürülebilir ve birden fazla basit yöntem yerine uzun ve karmaşık bir ortak yöntem ortaya çıkabilir. Bu da ayrıca kodunuzu karmaşık bir hale sokar.
 
 - Ayrıca işlevselliğin etkinleştirilmesini/devre dışı bırakılmasını bir parametreye taşırken dikkatli olun. Bu, sonuçta **Replace Parameter with Explicit Methods** tekniği aracılığıyla ele alınması gereken büyük bir koşullu operatörün oluşturulmasına yol açabilir.
 
 ### 🤯 Nasıl Refactor Edilir?
 
-1. Bir parametre ile yeni bir yöntem oluşturun ve **Extract Method** yöntemi uygulayarak onu tüm sınıflar için aynı olan koda taşıyın. Bazen yöntemlerin yalnızca belirli bir kısmının aslında aynı olduğunu unutmayın. Bu durumda yeniden düzenleme, yalnızca aynı parçanın yeni bir yönteme çıkarılmasından oluşur.
+1. Bir parametre ile yeni bir yöntem oluşturun ve **Extract Method** yöntemi uygulayarak, bu yöntemi tüm sınıflar için aynı olan koda taşıyın. Bazen yöntemlerin yalnızca belirli bir kısmının aslında aynı olduğunu unutmayın yani tüm yöntem aynı değil ve düzenlemeye gitmeniz gerekecektir. Bu durumda refactoring, yalnızca aynı parçanın yeni bir yönteme çıkarılmasından oluşacaktır.
 
 2. Yeni yöntemin kodunda özel/farklı değeri bir parametre ile değiştirin.
 
